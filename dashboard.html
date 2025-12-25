@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard | Stackly Boutique</title>
+
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root{
+  --bg:#fafafa; --card:#fff; --text:#222; --muted:#6b6b6b;
+  --accent:#f72585; --accent-dark:#d31e69; --glass:rgba(255,255,255,0.65);
+  --header-h:88px; --radius:18px;
+}
+[data-theme='dark']{
+  --bg:#0b0b0c; --card:#0f0f10; --text:#f1f1f1; --muted:#bdbdbd;
+  --accent:#ff6aa3; --accent-dark:#cc578c; --glass:rgba(255,255,255,0.04);
+}
+*{box-sizing:border-box;}
+body{margin:0; padding-top:var(--header-h); font-family:'Poppins', sans-serif; background:var(--bg); color:var(--text); transition:0.25s;}
+header{position:fixed; top:0; left:0; right:0; display:flex; justify-content:space-between; align-items:center; padding:0.5rem 1rem; background:linear-gradient(180deg,var(--glass),rgba(0,0,0,0)); backdrop-filter:blur(6px); z-index:1200; flex-wrap:wrap;}
+.logo a{display:flex; align-items:center; gap:0.7rem; text-decoration:none; color:var(--accent); font-family:'Playfair Display', serif; font-size:1.6rem; font-weight:700;}
+.logo img{height:40px; width:auto;}
+nav#mainNav{display:flex; gap:1.5rem;}
+nav#mainNav a{color:var(--text); text-decoration:none; font-weight:600; text-transform:uppercase; font-size:0.95rem; cursor:pointer;}
+nav#mainNav a:hover, nav#mainNav a[aria-current="page"]{color:var(--accent);}
+.actions{display:flex; gap:0.8rem; align-items:center;}
+.actions button, .actions a{padding:0.5rem 1.2rem; border-radius:25px; font-weight:600; font-size:0.95rem; border:2px solid transparent; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; transition:0.3s;}
+.actions button#themeToggle{background:transparent; color:var(--text); border:2px solid var(--text);}
+.actions button#themeToggle:hover{background:var(--accent); border-color:var(--accent); color:white;}
+.actions a.home-btn{background:var(--accent); color:white; border:2px solid var(--accent);}
+.actions a.home-btn:hover{background:var(--accent-dark);}
+.actions button#logoutBtn{background:transparent; color:var(--accent); border:2px solid var(--accent);}
+.actions button#logoutBtn:hover{background:var(--accent); color:white;}
+.hamburger{display:none; font-size:1.8rem; background:none; border:none; cursor:pointer;}
+
+/* Dashboard main */
+main{max-width:1200px; margin:3rem auto 5rem auto; padding:0 6vw;}
+.welcome{text-align:center; margin-bottom:1rem;}
+.welcome h1{font-family:'Playfair Display',serif; font-size:2.4rem; margin-bottom:0.5rem;}
+.welcome p{color:var(--muted);}
+.grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.2rem; margin-top:1rem;}
+.card{background:var(--card); border-radius:var(--radius); box-shadow:0 10px 36px rgba(0,0,0,0.08); padding:1.4rem; transition:transform 0.25s,box-shadow 0.25s;}
+.card:hover{transform:translateY(-6px); box-shadow:0 16px 40px rgba(0,0,0,0.12);}
+.card h3{font-size:1rem; font-weight:700; margin-bottom:0.3rem; display:flex; align-items:center; gap:0.5rem;}
+.card .big{font-size:2rem; font-weight:800;}
+.card p.small{color:var(--muted); font-size:0.92rem; margin:0;}
+.chart-container{background:var(--card); border-radius:var(--radius); padding:1.5rem; margin-top:2rem; box-shadow:0 10px 36px rgba(0,0,0,0.08);}
+.chart-container h2{margin-bottom:1rem; font-family:'Playfair Display',serif; font-size:1.3rem;}
+canvas{width:100%!important; height:360px!important;}
+.actions-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin-top:1.5rem;}
+.action-btn{background:var(--card); border:1.5px solid rgba(0,0,0,0.04); border-radius:14px; padding:1rem; text-align:center; cursor:pointer; transition:transform 0.25s,box-shadow 0.25s;}
+.action-btn:hover{transform:translateY(-5px); box-shadow:0 12px 30px rgba(0,0,0,0.08);}
+.action-btn i{font-size:1.5rem; margin-bottom:0.4rem;}
+
+/* Footer identical to shop.html */
+footer{background:var(--card); color:var(--muted); font-size:0.95rem; margin-top:4rem;}
+footer .social-icons{margin-bottom:1.4rem; font-size:1.6rem; display:flex; justify-content:center; gap:1.2rem;}
+footer .social-icons a{color:var(--muted); transition:0.3s;}
+footer .social-icons a:hover{color:var(--accent);}
+
+@media(max-width:768px){
+  nav#mainNav{display:none; flex-direction:column; width:100%; margin-top:0.5rem;}
+  nav#mainNav a{text-align:center; width:100%; padding:0.7rem 0;}
+  .hamburger{display:block;}
+  nav#mainNav.active{display:flex;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <a href="index.html"><img src="assets/logo/the_stackly_logo.png" alt="Stackly Logo"><span>STACKLY</span></a>
+  </div>
+  <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false"><i class="fa fa-bars"></i></button>
+  <nav id="mainNav" aria-label="Primary navigation">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="dashboard.html" aria-current="page">Dashboard</a>
+  </nav>
+  <div class="actions">
+    <button id="themeToggle" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+    <a href="index.html" class="home-btn">Homepage</a>
+    <button id="logoutBtn">Logout</button>
+  </div>
+</header>
+
+<main>
+  <section class="welcome">
+    <h1>Welcome, <span id="userName" style="color:var(--accent)">Customer</span> 👋</h1>
+    <p>Your personalized Stackly dashboard overview.</p>
+  </section>
+
+  <section class="grid">
+    <div class="card"><h3><i class="fa-solid fa-server" style="color:var(--accent)"></i> Cloud Usage</h3><div class="big">78%</div><p class="small">of your allocated resources used</p></div>
+    <div class="card"><h3><i class="fa-solid fa-chart-line" style="color:#4fc3f7"></i> Monthly Growth</h3><div class="big">+23%</div><p class="small">compared to last month</p></div>
+    <div class="card"><h3><i class="fa-solid fa-wallet" style="color:#34d399"></i> Billing Summary</h3><div class="big">$124.00</div><p class="small">Next payment due 10 Nov</p></div>
+  </section>
+
+  <section class="chart-container">
+    <h2>Usage Overview</h2><canvas id="usageChart"></canvas>
+  </section>
+  <section class="chart-container">
+    <h2>Billing Trend</h2><canvas id="billingChart"></canvas>
+  </section>
+
+  <section style="margin-top:18px;">
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.15rem;">Quick Actions</h2>
+    <div class="actions-grid">
+      <button class="action-btn"><i class="fa-solid fa-cloud-arrow-up" style="color:var(--accent)"></i><span>Upload Files</span></button>
+      <button class="action-btn"><i class="fa-solid fa-database" style="color:#60a5fa"></i><span>Manage Storage</span></button>
+      <button class="action-btn"><i class="fa-solid fa-headset" style="color:#34d399"></i><span>Support Tickets</span></button>
+      <button class="action-btn"><i class="fa-solid fa-gear" style="color:#f59e0b"></i><span>Account Settings</span></button>
+    </div>
+  </section>
+</main>
+
+<!-- Footer (from shop.html) -->
+<footer>
+  <div style="max-width:1200px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:space-between; gap:2rem; padding:2.5rem 6vw;">
+    <div style="flex:1; min-width:220px;">
+      <a href="index.html" style="display:flex; align-items:center; gap:0.5rem; text-decoration:none; color:var(--accent); font-family:'Playfair Display', serif; font-size:1.4rem; font-weight:700;">
+        <img src="assets/logo/the_stackly_logo.png" alt="Stackly Logo" style="height:35px; width:auto;"> STACKLY
+      </a>
+      <p style="color:var(--muted); margin-top:0.8rem; line-height:1.5;">
+        Stackly Boutique<br>
+        123 Fashion Avenue, New Delhi, India<br>
+        Email: info@stackly.com<br>
+        Phone: +91 98765 43210
+      </p>
+    </div>
+    <div style="flex:1; min-width:150px;">
+      <h3 style="font-family:'Playfair Display', serif; color:var(--accent); margin-bottom:0.8rem;">Quick Links</h3>
+      <ul style="list-style:none; padding:0; margin:0; line-height:2;">
+        <li><a href="index.html" style="color:var(--muted); text-decoration:none;">Home</a></li>
+        <li><a href="shop.html" style="color:var(--muted); text-decoration:none;">Shop</a></li>
+        <li><a href="about.html" style="color:var(--muted); text-decoration:none;">About</a></li>
+        <li><a href="contact.html" style="color:var(--muted); text-decoration:none;">Contact</a></li>
+        <li><a href="dashboard.html" style="color:var(--muted); text-decoration:none;">Dashboard</a></li>
+        <li><a href="login.html" style="color:var(--muted); text-decoration:none;">Login</a></li>
+        <li><a href="register.html" style="color:var(--muted); text-decoration:none;">Register</a></li>
+      </ul>
+    </div>
+    <div style="flex:1; min-width:150px;">
+      <h3 style="font-family:'Playfair Display', serif; color:var(--accent); margin-bottom:0.8rem;">Follow Us</h3>
+      <div class="social-icons" style="font-size:1.5rem; display:flex; gap:1rem;">
+        <a href="404.html" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="404.html" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="404.html" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="404.html" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="404.html" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center; color:var(--muted); margin-top:1rem;">
+    &copy; 2025 Stackly. All rights reserved.
+  </div>
+</footer>
+
+<script>
+// Theme toggle
+const root=document.documentElement;
+const themeToggle=document.getElementById('themeToggle');
+const hamburgerIcon=document.querySelector('.hamburger i');
+function applyTheme(theme){
+  if(theme==='dark'){
+    root.setAttribute('data-theme','dark');
+    themeToggle.innerHTML='<i class="fa-solid fa-sun"></i>';
+    hamburgerIcon.style.color = '#fff';
+  } else {
+    root.removeAttribute('data-theme');
+    themeToggle.innerHTML='<i class="fa-solid fa-moon"></i>';
+    hamburgerIcon.style.color = '#222';
+  }
+}
+const savedTheme=localStorage.getItem('stackly-theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+applyTheme(savedTheme);
+themeToggle.addEventListener('click',()=>{
+  const current=root.getAttribute('data-theme')==='dark'?'light':'dark';
+  applyTheme(current);
+  localStorage.setItem('stackly-theme',current);
+  updateChartsTheme(current);
+});
+
+// Hamburger toggle
+const hamburger=document.querySelector('.hamburger');
+const nav=document.getElementById('mainNav');
+hamburger.addEventListener('click',()=>{
+  nav.classList.toggle('active');
+  hamburger.setAttribute('aria-expanded', nav.classList.contains('active'));
+});
+
+// User greeting & logout
+const user=JSON.parse(localStorage.getItem('loggedInUser'));
+document.getElementById('userName').textContent=user&&user.name?user.name:'Customer';
+document.getElementById('logoutBtn').addEventListener('click',()=>{
+  localStorage.removeItem('loggedInUser');
+  window.location.href='login.html';
+});
+
+// Charts
+const ctx1=document.getElementById('usageChart');
+const ctx2=document.getElementById('billingChart');
+let usageChart,billingChart;
+function createCharts(theme){
+  const textColor=theme==='dark'?'#f1f1f1':'#222';
+  const gridColor=theme==='dark'?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.1)';
+  const accent=getComputedStyle(root).getPropertyValue('--accent').trim()||'#f72585';
+  if(usageChart)usageChart.destroy(); 
+  if(billingChart)billingChart.destroy();
+  
+  usageChart=new Chart(ctx1,{
+    type:'line',
+    data:{
+      labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'],
+      datasets:[{label:'Usage (%)',data:[40,50,55,65,70,78,82,85,88,92],borderColor:accent,backgroundColor:'rgba(247,37,133,0.15)',fill:true,tension:0.4,pointRadius:4,pointBackgroundColor:accent}]
+    },
+    options:{scales:{y:{ticks:{color:textColor},grid:{color:gridColor}},x:{ticks:{color:textColor},grid:{color:gridColor}}},plugins:{legend:{labels:{color:textColor}}}}
+  });
+  
+  billingChart=new Chart(ctx2,{
+    type:'bar',
+    data:{
+      labels:['Apr','May','Jun','Jul','Aug','Sep','Oct'],
+      datasets:[{label:'Billing ($)',data:[90,100,105,110,120,124,130],backgroundColor:accent}]
+    },
+    options:{scales:{y:{ticks:{color:textColor},grid:{color:gridColor}},x:{ticks:{color:textColor},grid:{color:gridColor}}},plugins:{legend:{labels:{color:textColor}}}}
+  });
+}
+function updateChartsTheme(theme){createCharts(theme);}
+createCharts(savedTheme);
+</script>
+</body>
+</html>

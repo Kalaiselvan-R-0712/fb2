@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STACKLY | Where Style Meets Soul</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Remix Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --black: #000;
+      --white: #fff;
+      --bg-light: #ffffff;
+      --bg-dark: #0b0b0b;
+      --text-dark: #111;
+      --text-light: #f5f5f5;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      transition: background 0.4s, color 0.4s;
+    }
+
+    body.dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      z-index: 1000;
+      transition: background 0.4s, color 0.4s;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    body.dark-mode header {
+      background: var(--bg-dark);
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.05);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      height: 50px;
+      width: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .brand-name {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--gold);
+      font-family: "Playfair Display", serif;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: inherit;
+      margin: 0 1rem;
+      font-weight: 500;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0%;
+      height: 2px;
+      background: var(--gold);
+      transition: 0.3s;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      background: transparent;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    #modeToggle {
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--gold);
+      transition: transform 0.3s;
+    }
+
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropbtn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--bg-light);
+      min-width: 120px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      border-radius: 8px;
+      z-index: 1000;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 0.5rem 1rem;
+      color: var(--text-dark);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .dropdown.show .dropdown-content {
+      display: block;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--gold);
+      z-index: 1001;
+    }
+
+    /* Hero */
+    .hero {
+      background: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      color: var(--white);
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-family: 'Playfair Display', serif;
+      color: var(--gold);
+    }
+
+    .hero p {
+      margin-top: 0.8rem;
+      font-size: 1.1rem;
+      color: #eee;
+    }
+
+    .hero .cta {
+      margin-top: 1.5rem;
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      padding: 0.7rem 1.8rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .hero .cta:hover {
+      background: #f1cc59;
+    }
+
+    /* Collections */
+    .collections {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 4rem 2rem;
+    }
+
+    .collection-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      cursor: pointer;
+    }
+
+    .collection-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+
+    .collection-card:hover img {
+      transform: scale(1.1);
+    }
+
+    .collection-card h3 {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      color: var(--white);
+      font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    /* About */
+    .about {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .about h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .about p {
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      color: var(--muted-light);
+    }
+
+    body.dark-mode .about p {
+      color: var(--muted-dark);
+    }
+
+    /* Contact */
+    .contact {
+      background: var(--gold);
+      color: var(--black);
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .contact h2 {
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 1rem;
+    }
+
+    .contact button {
+      background: var(--black);
+      color: var(--gold);
+      padding: 0.6rem 1.5rem;
+      border-radius: 20px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .contact button:hover {
+      background: #222;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--bg-dark);
+      color: var(--text-light);
+      padding: 4rem 2rem 2rem;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    body:not(.dark-mode) footer {
+      background: var(--bg-light);
+      color: var(--text-dark);
+    }
+
+    body:not(.dark-mode) footer {
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 0 2rem;
+    }
+
+    .footer-section {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--gold);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .footer-logo img {
+      height: 35px;
+      width: auto;
+    }
+
+    .footer-section p {
+      color: var(--text-light);
+      margin-top: 0.8rem;
+      line-height: 1.5;
+    }
+
+    body:not(.dark-mode) .footer-section p {
+      color: var(--text-dark);
+    }
+
+    .footer-section h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      line-height: 2;
+    }
+
+    .footer-links a {
+      color: var(--text-light);
+      text-decoration: none;
+    }
+
+    body:not(.dark-mode) .footer-links a {
+      color: var(--text-dark);
+    }
+
+    .footer-links a:hover {
+      color: var(--gold);
+    }
+
+    .social-icons {
+      font-size: 1.5rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-icons a {
+      color: var(--gold);
+      transition: 0.3s;
+    }
+
+    .social-icons a:hover {
+      color: #f5d76e;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      color: var(--text-light);
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    body:not(.dark-mode) .footer-bottom {
+      color: var(--text-dark);
+      border-top-color: rgba(0,0,0,0.1);
+    }
+
+    /* --- MOBILE FIXES --- */
+    @media (max-width: 768px) {
+      header {
+        flex-wrap: wrap;
+        padding: 0.8rem 1.2rem;
+      }
+
+      .hamburger {
+        display: block;
+        position: absolute;
+        top: 1rem;
+        right: 1.2rem;
+      }
+
+      nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        margin-top: 1rem;
+      }
+
+      nav.active {
+        display: flex;
+      }
+
+      nav a, .dropbtn {
+        display: block;
+        text-align: center;
+        width: 100%;
+        padding: 0.8rem 0;
+      }
+
+      .dropdown-content {
+        position: relative;
+        background: var(--bg-light);
+        box-shadow: none;
+        margin-top: 0.4rem;
+      }
+
+      /* Center dropdown arrow under Home */
+      .dropbtn i {
+        display: inline-block;
+        transform: translateY(2px);
+      }
+
+      .btn-group {
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.5rem;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 0 1rem;
+      }
+
+      .footer-section {
+        min-width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="homepage2.html" class="logo">
+      <img src="assets/logo/the_stackly_logo.png" alt="STACKLY Logo" class="logo-img">
+      <span class="brand-name">STACKLY</span>
+    </a>
+
+    <nav>
+      <div class="dropdown">
+        <a href="#" class="dropbtn">Home <i class="ri-arrow-down-s-line"></i></a>
+        <div class="dropdown-content">
+          <a href="index.html">Home:1</a>
+        </div>
+      </div>
+      <a href="shop2.html">Shop</a>
+      <a href="about2.html">About</a>
+      <a href="gallery2.html">Gallery</a>
+      <a href="contact2.html">Contact</a>
+      <a href="dashboard.html">Dashboard</a>
+    </nav>
+
+    <div class="btn-group">
+      <a href="login.html" class="btn">Login</a>
+      <a href="register.html" class="btn">Register</a>
+      <i id="modeToggle" class="ri-moon-line"></i>
+    </div>
+
+    <div class="hamburger"><i class="ri-menu-line"></i></div>
+  </header>
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Where Style Meets Soul</h1>
+      <p>Discover timeless fashion crafted for the modern spirit.</p>
+      <a href="shop2.html"><button class="cta">Explore Collections</button></a>
+    </div>
+  </section>
+
+  <section class="collections">
+    <div class="collection-card">
+      <img src="https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=800&q=80" alt="Luxury Wear">
+      <h3>Luxury Wear</h3>
+    </div>
+    <div class="collection-card">
+        <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80"alt="Street Wear">
+        <h3>Street Wear</h3>
+    </div>
+    <div class="collection-card">
+      <img src="https://images.unsplash.com/photo-1520694478166-daaaaec95b69?auto=format&fit=crop&w=800&q=80" alt="Ethnic Elegance">
+      <h3>Ethnic Elegance</h3>
+    </div>
+    <div class="collection-card">
+      <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80" alt="Modern Chic">
+      <h3>Modern Chic</h3>
+    </div>
+  </section>
+
+  <section class="about">
+    <h2>About STACKLY</h2>
+    <p>STACKLY blends elegance and edge, uniting luxury craftsmanship with everyday style. Fashion that moves with your soul and redefines your presence.</p>
+    <a href="about2.html"><button class="btn">Know More</button></a>
+  </section>
+
+  <section class="contact">
+    <h2>Get In Touch</h2>
+    <p>Have questions? Let's design your next look together.</p>
+    <a href="contact2.html"><button>Contact Us</button></a>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <a href="homepage2.html" class="footer-logo">
+          <img src="assets/logo/the_stackly_logo.png" alt="Stackly Logo">
+          STACKLY
+        </a>
+        <p>
+          Stackly Boutique<br>
+          123 Fashion Avenue, New Delhi, India<br>
+          Email: info@stackly.com<br>
+          Phone: +91 98765 43210
+        </p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="homepage2.html">Home</a></li>
+          <li><a href="shop2.html">Shop</a></li>
+          <li><a href="about2.html">About</a></li>
+          <li><a href="gallery2.html">Gallery</a></li>
+          <li><a href="contact2.html">Contact</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Follow Us</h3>
+        <div class="social-icons">
+          <a href="404.html" aria-label="Email"><i class="ri-mail-line"></i></a>
+          <a href="404.html" aria-label="LinkedIn"><i class="ri-linkedin-fill"></i></a>
+          <a href="404.html" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
+          <a href="404.html" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
+          <a href="404.html" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 STACKLY. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('modeToggle');
+    const body = document.body;
+    if (localStorage.getItem('mode') === 'dark') {
+      body.classList.add('dark-mode');
+      toggle.classList.replace('ri-moon-line', 'ri-sun-line');
+    }
+    toggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      const dark = body.classList.contains('dark-mode');
+      localStorage.setItem('mode', dark ? 'dark' : 'light');
+      toggle.classList.toggle('ri-sun-line', dark);
+      toggle.classList.toggle('ri-moon-line', !dark);
+    });
+
+    const dropdown = document.querySelector('.dropdown');
+    const dropbtn = document.querySelector('.dropbtn');
+    dropbtn.addEventListener('click', e => {
+      e.preventDefault();
+      dropdown.classList.toggle('show');
+    });
+    window.addEventListener('click', e => {
+      if (!dropdown.contains(e.target)) dropdown.classList.remove('show');
+    });
+
+    const hamburger = document.querySelector('.hamburger');
+    const nav = document.querySelector('nav');
+    hamburger.addEventListener('click', () => {
+      nav.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>

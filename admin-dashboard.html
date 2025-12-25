@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard | Stackly Boutique</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root{
+      --bg:#fafafa; --card:#fff; --text:#222; --muted:#6b6b6b;
+      --accent:#f72585; --accent-dark:#d31e69; --glass:rgba(255,255,255,0.65);
+      --header-h:88px; --radius:18px;
+    }
+    [data-theme='dark']{
+      --bg:#0b0b0c; --card:#0f0f10; --text:#f1f1f1; --muted:#bdbdbd;
+      --accent:#ff6aa3; --accent-dark:#cc578c; --glass:rgba(255,255,255,0.04);
+    }
+
+    *{box-sizing:border-box;}
+    html,body{height:100%;}
+    body{
+      margin:0;
+      padding-top:var(--header-h);
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      transition:background 0.25s,color 0.25s;
+    }
+
+    header{
+      position:fixed;top:0;left:0;right:0;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0.5rem 1rem;
+      background:linear-gradient(180deg,var(--glass),rgba(0,0,0,0));
+      backdrop-filter:blur(6px);
+      z-index:1200;flex-wrap:wrap;border-bottom:1px solid rgba(0,0,0,0.04);
+    }
+
+    .logo{display:flex;align-items:center;gap:0.6rem;}
+    .logo a{display:flex;align-items:center;gap:0.7rem;text-decoration:none;color:var(--accent);font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;}
+    .logo img{height:40px;width:auto;object-fit:cover;border-radius:9999px;}
+
+    nav#mainNav{display:flex;gap:1.2rem;align-items:center;}
+    nav#mainNav a{color:var(--text);text-decoration:none;font-weight:600;text-transform:uppercase;font-size:0.95rem;}
+    nav#mainNav a:hover, nav#mainNav a[aria-current="page"]{color:var(--accent);}
+
+    .actions{display:flex;gap:0.7rem;align-items:center;}
+    .actions button, .actions a{padding:0.45rem 1rem;border-radius:22px;font-weight:600;font-size:0.95rem;border:2px solid transparent;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:0.25s;text-decoration:none;color:inherit;background:transparent;}
+    .actions button#themeToggle{border:2px solid var(--text);}
+    .actions button#themeToggle:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+    .actions a.home-btn{background:var(--accent);color:#fff;border:2px solid var(--accent);}
+    .actions a.home-btn:hover{background:var(--accent-dark);border-color:var(--accent-dark);}
+    .hamburger{display:none;font-size:1.6rem;background:none;border:none;cursor:pointer;padding:0.2rem 0.5rem;}
+    .hamburger i{color:var(--text);font-size:1.6rem;}
+
+    main{max-width:1200px;margin:2rem auto;padding:0 6vw 4rem;}
+    .welcome{text-align:center;margin-bottom:1rem;}
+    .welcome h1{font-family:'Playfair Display',serif;font-size:2.2rem;margin:0 0 6px;}
+    .welcome p{color:var(--muted);margin:0;}
+
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:1rem;}
+    .card{
+      background:var(--card);border-radius:var(--radius);
+      box-shadow:0 8px 30px rgba(0,0,0,0.06);
+      padding:1.25rem;transition:transform 0.25s,box-shadow 0.25s;
+    }
+    .card:hover{transform:translateY(-8px);box-shadow:0 20px 45px rgba(0,0,0,0.12);}
+    .card h3{margin:0 0 6px;font-size:1rem;display:flex;align-items:center;gap:0.5rem;font-weight:700;}
+    .card .big{font-size:2rem;font-weight:800;margin:6px 0;}
+    .card p.small{color:var(--muted);margin:0;font-size:0.92rem;}
+
+    .controls-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1rem;}
+    .control-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem;border-radius:14px;background:var(--card);cursor:pointer;border:1px solid rgba(0,0,0,0.04);transition:transform .2s,box-shadow .2s;}
+    .control-btn:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.08);}
+    .control-btn i{font-size:1.6rem;margin-bottom:0.4rem;}
+
+    .chart-card{margin-top:1.5rem;padding:1.25rem;background:var(--card);border-radius:var(--radius);box-shadow:0 8px 30px rgba(0,0,0,0.06);}
+    .chart-card h2{font-family:'Playfair Display',serif;font-size:1.15rem;margin:0 0 1rem;color:var(--text);text-align:left;}
+
+footer { background:var(--card); padding:2.5rem 6vw; text-align:center; color:var(--muted); font-size:0.95rem; margin-top:4rem; }
+footer .social-icons { margin-bottom:1.4rem; font-size:1.6rem; display:flex; justify-content:center; gap:1.2rem; }
+footer .social-icons a { color:var(--muted); transition:0.3s; }
+footer .social-icons a:hover { color:var(--accent); }
+
+    @media(max-width:1024px){
+      .grid{grid-template-columns:repeat(2,1fr);}
+      .controls-grid{grid-template-columns:repeat(2,1fr);}
+    }
+    @media(max-width:768px){
+      nav#mainNav{display:none;width:100%;flex-direction:column;margin-top:0.6rem;}
+      nav#mainNav.active{display:flex;}
+      .hamburger{display:block;}
+      body{padding-top:78px;}
+      .grid{grid-template-columns:1fr;}
+      .controls-grid{grid-template-columns:1fr 1fr;}
+    }
+    @media(max-width:480px){
+      .actions a.home-btn{display:none;}
+      .controls-grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <a href="index.html"><img src="assets/logo/the_stackly_logo.png" alt="Stackly Logo"><span>STACKLY</span></a>
+  </div>
+
+  <button class="hamburger" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+
+  <nav id="mainNav">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="admin-dashboard.html" aria-current="page">Admin Dashboard</a>
+  </nav>
+
+  <div class="actions">
+    <button id="themeToggle" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+    <a href="index.html" class="home-btn">Homepage</a>
+    <button id="logoutBtn">Logout</button>
+  </div>
+</header>
+
+<main>
+  <section class="welcome">
+    <h1>Welcome, <span id="adminName" style="color:var(--accent)">Admin</span> 👋</h1>
+    <p>Your Stackly admin control center.</p>
+  </section>
+
+  <!-- Analytics -->
+  <section class="grid">
+    <div class="card"><h3><i class="fa-solid fa-users" style="color:var(--accent)"></i> Total Users</h3><div class="big">1,254</div><p class="small">Active users this month</p></div>
+    <div class="card"><h3><i class="fa-solid fa-chart-pie" style="color:#4fc3f7"></i> Server Utilization</h3><div class="big">65%</div><p class="small">of total capacity in use</p></div>
+    <div class="card"><h3><i class="fa-solid fa-dollar-sign" style="color:#34d399"></i> Revenue</h3><div class="big">$23,870</div><p class="small">Collected this month</p></div>
+  </section>
+
+  <!-- Admin Controls -->
+  <section style="margin-top:18px;">
+    <h2 style="font-family:'Playfair Display',serif;margin:0 0 12px 0;font-size:1.15rem;">Admin Controls</h2>
+    <div class="controls-grid">
+      <button class="control-btn"><i class="fa-solid fa-user-gear" style="color:var(--accent)"></i><span>Manage Users</span></button>
+      <button class="control-btn"><i class="fa-solid fa-server" style="color:#60a5fa"></i><span>Monitor Servers</span></button>
+      <button class="control-btn"><i class="fa-solid fa-chart-line" style="color:#34d399"></i><span>View Reports</span></button>
+      <button class="control-btn"><i class="fa-solid fa-shield-halved" style="color:#f59e0b"></i><span>Security Settings</span></button>
+    </div>
+  </section>
+
+  <!-- System Overview -->
+  <section class="overview" style="margin-top:18px;">
+    <h2 style="font-family:'Playfair Display',serif;margin:0 0 12px 0;font-size:1.15rem;">System Overview</h2>
+    <div class="card">
+      <p class="small" style="margin-bottom:8px;">Real-time system status and health overview:</p>
+      <ul style="margin:0;padding-left:20px;color:var(--muted);line-height:1.6;">
+        <li>All 12 servers are operational.</li>
+        <li>Backup system last completed: <strong>2 hours ago</strong>.</li>
+        <li>Average response time: <strong>142ms</strong>.</li>
+        <li>Security scans: <strong>No vulnerabilities detected</strong>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Charts Section -->
+  <section>
+    <div class="chart-card">
+      <h2>Usage Overview</h2>
+      <canvas id="usageChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h2>Billing Trend</h2>
+      <canvas id="billingChart"></canvas>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="social-icons" style="margin-bottom:10px;font-size:1.2rem;">
+    <a href="https://mail.google.com"><i class="fa-solid fa-envelope"></i></a>
+    <a href="https://www.linkedin.com"><i class="fab fa-linkedin-in"></i></a>
+    <a href="https://x.com"><i class="fab fa-twitter"></i></a>
+    <a href="https://www.facebook.com"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
+  </div>
+  <p>© <span id="year"></span> Stackly. All rights reserved.</p>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const root=document.documentElement,themeToggle=document.getElementById('themeToggle');
+  function applyTheme(t){if(t==='dark'){root.setAttribute('data-theme','dark');themeToggle.innerHTML='<i class="fa-solid fa-sun"></i>';}else{root.removeAttribute('data-theme');themeToggle.innerHTML='<i class="fa-solid fa-moon"></i>';}}
+  const savedTheme=localStorage.getItem('stackly-theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');applyTheme(savedTheme);
+  themeToggle.addEventListener('click',()=>{const current=root.getAttribute('data-theme')==='dark'?'light':'dark';applyTheme(current);localStorage.setItem('stackly-theme',current);});
+  document.querySelector('.hamburger').addEventListener('click',()=>{document.getElementById('mainNav').classList.toggle('active');});
+  const user=JSON.parse(localStorage.getItem('loggedInUser'));
+  const nameEl=document.getElementById('adminName');
+  if(!user||user.role!=='admin'){window.location.href='login.html';}else{nameEl.textContent=user.name||'Admin';}
+  document.getElementById('logoutBtn').addEventListener('click',()=>{localStorage.removeItem('loggedInUser');window.location.href='login.html';});
+
+  // Charts
+  const ctx1=document.getElementById('usageChart');
+  const ctx2=document.getElementById('billingChart');
+
+  const lineColor=getComputedStyle(root).getPropertyValue('--accent').trim();
+  const textColor=getComputedStyle(root).getPropertyValue('--text').trim();
+  const mutedColor=getComputedStyle(root).getPropertyValue('--muted').trim();
+
+  new Chart(ctx1,{
+    type:'line',
+    data:{labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'],
+    datasets:[{label:'Usage (GB)',data:[120,190,300,250,320,400,370,420,480,510],
+    borderColor:lineColor,backgroundColor:'rgba(247,37,133,0.15)',fill:true,tension:0.4}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{color:mutedColor}},y:{ticks:{color:mutedColor}}}}
+  });
+
+  new Chart(ctx2,{
+    type:'bar',
+    data:{labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'],
+    datasets:[{label:'Billing ($)',data:[800,950,1100,1050,1200,1500,1300,1550,1600,1750],
+    backgroundColor:lineColor,borderRadius:6}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{color:mutedColor}},y:{ticks:{color:mutedColor}}}}
+  });
+</script>
+</body>
+</html>

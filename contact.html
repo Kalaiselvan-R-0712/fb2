@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact | Stackly Boutique</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+:root {
+  --bg: #fafafa; --card: #fff; --text: #222; --muted: #6b6b6b;
+  --accent: #f72585; --accent-dark: #d31e69; --glass: rgba(255,255,255,0.65);
+  --header-h: 88px; --radius:18px;
+}
+[data-theme='dark'] {
+  --bg:#0b0b0c; --card:#0f0f10; --text:#f1f1f1; --muted:#bdbdbd;
+  --accent:#ff6aa3; --accent-dark:#cc578c; --glass:rgba(255,255,255,0.04);
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; padding-top:var(--header-h); font-family:'Poppins', sans-serif;
+  background:var(--bg); color:var(--text); transition:0.25s;
+}
+header {
+  position:fixed; top:0; left:0; right:0; display:flex; justify-content:space-between;
+  align-items:center; padding:0.5rem 1rem; background:linear-gradient(180deg,var(--glass),rgba(0,0,0,0));
+  backdrop-filter:blur(6px); z-index:1200; flex-wrap:wrap;
+}
+.logo a {
+  display:flex; align-items:center; gap:0.7rem; text-decoration:none;
+  color:var(--accent); font-family:'Playfair Display', serif; font-size:1.6rem; font-weight:700;
+}
+.logo img { height:40px; width:auto; }
+nav#mainNav{display:flex; gap:1.5rem;}
+nav#mainNav a{color:var(--text); text-decoration:none; font-weight:600; text-transform:uppercase; font-size:0.95rem; cursor:pointer;}
+nav#mainNav a:hover, nav#mainNav a[aria-current="page"]{color:var(--accent);}
+.actions { display:flex; gap:0.8rem; align-items:center; }
+.actions button, .actions a {
+  padding:0.5rem 1.2rem; border-radius:25px; font-weight:600; font-size:0.95rem;
+  border:2px solid transparent; cursor:pointer; text-decoration:none; display:inline-flex;
+  align-items:center; justify-content:center; transition:0.3s;
+}
+.actions button#themeToggle { background:transparent; color:var(--text); border:2px solid var(--text); }
+.actions button#themeToggle:hover { background:var(--accent); border-color:var(--accent); color:white; }
+.actions a.login { background:transparent; color:var(--accent); border:2px solid var(--accent); }
+.actions a.login:hover { background:var(--accent); color:white; }
+.actions a.register { background:var(--accent); color:white; border:2px solid var(--accent); }
+.actions a.register:hover { background:var(--accent-dark); }
+
+.hamburger {
+  display:none; font-size:1.8rem; background:none; border:none; cursor:pointer;
+}
+.hamburger i { color: var(--text); transition: color 0.3s; }
+
+main {
+  max-width:900px; margin:4rem auto; padding:2.5rem 2rem; background:var(--card);
+  border-radius:var(--radius); box-shadow:0 10px 36px rgba(0,0,0,0.08); text-align:center;
+}
+main h1 { font-family:'Playfair Display', serif; font-size:2.6rem; margin-bottom:1.2rem; color:var(--accent); }
+.contact-content { color:var(--muted); font-size:1.1rem; margin-bottom:2.5rem; line-height:1.6; }
+
+form { display:flex; flex-direction:column; gap:1.2rem; max-width:600px; margin:0 auto; text-align:left; }
+label { font-weight:600; margin-bottom:0.4rem; color:var(--text); }
+input, textarea {
+  width:100%; padding:0.9rem 1rem; border-radius:10px; border:2px solid var(--accent);
+  background:var(--bg); color:var(--text); font-size:1rem; transition:0.3s;
+}
+input:focus, textarea:focus { border-color:var(--accent-dark); outline:none; }
+button.submit-btn {
+  background:var(--accent); color:#fff; border:none; padding:0.9rem 2rem;
+  border-radius:30px; font-weight:600; font-size:1rem; cursor:pointer; align-self:center; transition:0.3s;
+}
+button.submit-btn:hover { background:var(--accent-dark); }
+
+footer { background:var(--card); color:var(--muted); font-size:0.95rem; margin-top:4rem; }
+footer .social-icons { margin-bottom:1.4rem; font-size:1.6rem; display:flex; justify-content:center; gap:1.2rem; }
+footer .social-icons a { color:var(--muted); transition:0.3s; }
+footer .social-icons a:hover { color:var(--accent); }
+
+@media(max-width:768px){
+  nav#mainNav { display:none; flex-direction:column; width:100%; margin-top:0.5rem; }
+  nav#mainNav a { text-align:center; width:100%; padding:0.7rem 0; }
+  .hamburger { display:block; }
+  nav#mainNav.active { display:flex; }
+}
+@media(max-width:480px){
+  main { padding:2rem 1rem; }
+  main h1 { font-size:2rem; }
+  .logo img { height:35px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <a href="index.html"><img src="assets/logo/the_stackly_logo.png" alt="Stackly Logo"><span>STACKLY</span></a>
+  </div>
+  <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false"><i class="fa fa-bars"></i></button>
+  <nav id="mainNav" aria-label="Primary navigation">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+    <a href="contact.html" aria-current="page">Contact</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+  <div class="actions">
+    <button id="themeToggle" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+    <a href="login.html" class="login">Login</a>
+    <a href="register.html" class="register">Register</a>
+  </div>
+</header>
+
+<main>
+  <h1>Contact Us</h1>
+  <div class="contact-content">
+    We’d love to hear from you! Whether you have a question about our collections, your order, or just want to share your experience, feel free to reach out.
+  </div>
+
+  <form id="contactForm">
+    <div>
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" placeholder="Your Name" required>
+    </div>
+    <div>
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="you@email.com" required>
+    </div>
+    <div>
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" placeholder="Type your message here..." required></textarea>
+    </div>
+    <button type="submit" class="submit-btn">Send Message</button>
+  </form>
+</main>
+
+<footer>
+  <div style="max-width:1200px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:space-between; gap:2rem; padding:2.5rem 6vw;">
+    
+    <!-- Logo & Brand -->
+    <div style="flex:1; min-width:220px;">
+      <a href="index.html" style="display:flex; align-items:center; gap:0.5rem; text-decoration:none; color:var(--accent); font-family:'Playfair Display', serif; font-size:1.4rem; font-weight:700;">
+        <img src="assets/logo/the_stackly_logo.png" alt="Stackly Logo" style="height:35px; width:auto;"> STACKLY
+      </a>
+      <p style="color:var(--muted); margin-top:0.8rem; line-height:1.5;">
+        Stackly Boutique<br>
+        123 Fashion Avenue, New Delhi, India<br>
+        Email: info@stackly.com<br>
+        Phone: +91 98765 43210
+      </p>
+    </div>
+
+    <!-- Quick Links -->
+    <div style="flex:1; min-width:150px;">
+      <h3 style="font-family:'Playfair Display', serif; color:var(--accent); margin-bottom:0.8rem;">Quick Links</h3>
+      <ul style="list-style:none; padding:0; margin:0; line-height:2;">
+        <li><a href="index.html" style="color:var(--muted); text-decoration:none;">Home</a></li>
+        <li><a href="shop.html" style="color:var(--muted); text-decoration:none;">Shop</a></li>
+        <li><a href="about.html" style="color:var(--muted); text-decoration:none;">About</a></li>
+        <li><a href="contact.html" style="color:var(--muted); text-decoration:none;">Contact</a></li>
+        <li><a href="dashboard.html" style="color:var(--muted); text-decoration:none;">Dashboard</a></li>
+        <li><a href="login.html" style="color:var(--muted); text-decoration:none;">Login</a></li>
+        <li><a href="register.html" style="color:var(--muted); text-decoration:none;">Register</a></li>
+      </ul>
+    </div>
+
+    <!-- Social Icons -->
+    <div style="flex:1; min-width:150px;">
+      <h3 style="font-family:'Playfair Display', serif; color:var(--accent); margin-bottom:0.8rem;">Follow Us</h3>
+      <div class="social-icons" style="font-size:1.5rem; display:flex; gap:1rem;">
+        <a href="404.html" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="404.html" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="404.html" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="404.html" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="404.html" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="text-align:center; color:var(--muted); margin-top:1rem;">
+    &copy; 2025 Stackly. All rights reserved.
+  </div>
+</footer>
+
+<script>
+// Theme toggle
+const themeToggle = document.getElementById('themeToggle');
+const root = document.documentElement;
+const hamburgerIcon = document.querySelector('.hamburger i');
+
+function applyTheme(theme){
+  if(theme==='dark'){
+    root.setAttribute('data-theme','dark');
+    themeToggle.setAttribute('aria-pressed','true');
+    themeToggle.innerHTML='<i class="fa-solid fa-sun"></i>';
+    hamburgerIcon.style.color = '#fff';
+  } else {
+    root.removeAttribute('data-theme');
+    themeToggle.setAttribute('aria-pressed','false');
+    themeToggle.innerHTML='<i class="fa-solid fa-moon"></i>';
+    hamburgerIcon.style.color = '#222';
+  }
+}
+
+const savedTheme = localStorage.getItem('stackly-theme') || 
+                   (window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+applyTheme(savedTheme);
+
+themeToggle.addEventListener('click', ()=>{
+  const current = root.getAttribute('data-theme')==='dark'?'light':'dark';
+  applyTheme(current);
+  localStorage.setItem('stackly-theme', current);
+});
+
+// Hamburger toggle
+const hamburger=document.querySelector('.hamburger');
+const nav=document.getElementById('mainNav');
+hamburger.addEventListener('click', ()=>{
+  nav.classList.toggle('active');
+  hamburger.setAttribute('aria-expanded', nav.classList.contains('active'));
+});
+
+// Contact form
+document.getElementById('contactForm').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  const name=document.getElementById('name').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const message=document.getElementById('message').value.trim();
+
+  if(!name || !email || !message){
+    alert("Please fill this up!");
+    return;
+  }
+
+  window.location.href = "404.html";
+});
+</script>
+
+</body>
+</html>

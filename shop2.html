@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STACKLY | Shop the Collection</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Remix Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --black: #000;
+      --white: #fff;
+      --text-dark: #111;
+      --text-light: #f5f5f5;
+      --bg-light: #ffffff;
+      --bg-dark: #0b0b0b;
+      --muted-light: #555;
+      --muted-dark: #bbb;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      transition: background 0.4s, color 0.4s;
+    }
+
+    body.dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      z-index: 1000;
+      transition: background 0.4s, color 0.4s;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      flex-wrap: wrap;
+    }
+
+    body.dark-mode header {
+      background: var(--bg-dark);
+      box-shadow: 0 2px 10px rgba(255, 255, 255, 0.05);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      height: 50px;
+      width: auto;
+      vertical-align: middle;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-img:hover {
+      transform: scale(1.05);
+    }
+
+    .brand-name {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--gold);
+      font-family: "Poppins", sans-serif;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: inherit;
+      margin: 0 1rem;
+      font-weight: 500;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0%;
+      height: 2px;
+      background: var(--gold);
+      transition: 0.3s;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    nav a.active {
+      color: var(--gold);
+    }
+
+    body.dark-mode nav a.active {
+      color: #f5d76e;
+    }
+
+    nav a.active::after {
+      width: 100%;
+    }
+
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      background: transparent;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    #modeToggle {
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--gold);
+      transition: transform 0.3s;
+    }
+
+    #modeToggle:hover {
+      transform: rotate(25deg);
+    }
+
+    /* Hero */
+    .hero {
+      background: url('https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      color: var(--white);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+      padding: 1rem;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      color: var(--gold);
+      font-family: 'Playfair Display', serif;
+    }
+
+    .hero p {
+      color: #eee;
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Product grid */
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto 6rem;
+    }
+
+    .product-card {
+      border-radius: 15px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow .2s;
+      background: #fff;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+      display:flex;
+      flex-direction:column;
+      cursor:default;
+    }
+
+    .product-card:hover{ transform:translateY(-6px); box-shadow: 0 20px 45px rgba(0,0,0,0.12); }
+    .product-card img { width:100%; height:320px; object-fit:cover; display:block; transition:transform .5s; }
+    .product-card:hover img { transform:scale(1.05); }
+    .product-info { padding:1rem; text-align:center; flex:1; display:flex; flex-direction:column; gap:.5rem; }
+    .product-info h3{ font-family:'Playfair Display',serif; color:var(--gold); margin:0; }
+    .product-info p{ color:var(--muted-light); margin:0; }
+    .product-info .price { margin-top:auto; font-weight:800; color:var(--gold); font-size:1.05rem; }
+    .product-info button {
+      background: var(--gold);
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.18s;
+      margin-top:0.6rem;
+    }
+    .product-info button:hover { background:#f1cc59; }
+
+    /* Footer */
+    footer {
+      background: var(--bg-dark);
+      color: var(--text-light);
+      text-align: center;
+      padding: 2rem 1rem;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    body:not(.dark-mode) footer {
+      background: var(--bg-light);
+      color: var(--text-dark);
+    }
+
+    .social-icons { margin-top:1rem; }
+    .social-icons a { color:var(--gold); font-size:1.4rem; margin:0 0.5rem; transition:0.3s; }
+    .social-icons a:hover { color:#f5d76e; }
+
+    /* --- HEADER RESPONSIVE FIXES --- */
+    header { flex-wrap: wrap; }
+
+    /* Dropdown & hamburger */
+    .hamburger { display:none; font-size:1.8rem; cursor:pointer; z-index:1002; }
+
+    @media (max-width: 1024px) { .logo-img { height: 40px; } nav { gap:0.5rem; } }
+    @media (max-width: 768px) {
+      nav { display: none; width:100%; flex-direction: column; margin-top:0.5rem; }
+      nav a { padding:0.7rem 0; width:100%; text-align:center; }
+      .hamburger { display:block; }
+      nav.active { display:flex; }
+      .btn-group { margin-top:0.5rem; width:100%; justify-content:center; }
+      header { padding:0.5rem 1rem; }
+    }
+    @media (max-width: 480px) { .brand-name { font-size:1.3rem; } .logo-img { height:35px; } }
+
+        body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      transition: background 0.4s, color 0.4s;
+    }
+
+    body.dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      z-index: 1000;
+      transition: background 0.4s, color 0.4s;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    body.dark-mode header {
+      background: var(--bg-dark);
+      box-shadow: 0 2px 10px rgba(255,255,255,0.05);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      height: 50px;
+      width: auto;
+      vertical-align: middle;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-img:hover {
+      transform: scale(1.05);
+    }
+
+    .brand-name {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--gold);
+      font-family: "Poppins", sans-serif;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: inherit;
+      margin: 0 1rem;
+      font-weight: 500;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0%;
+      height: 2px;
+      background: var(--gold);
+      transition: 0.3s;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    nav a.active {
+      color: var(--gold);
+    }
+
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      background: transparent;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    #modeToggle {
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--gold);
+      transition: transform 0.3s;
+    }
+
+    #modeToggle:hover {
+      transform: rotate(25deg);
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--gold);
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      z-index: 1001;
+    }
+
+    /* Hero */
+    .hero {
+      background: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      color: var(--white);
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-family: 'Playfair Display', serif;
+      color: var(--gold);
+    }
+
+    .hero p {
+      margin-top: 0.8rem;
+      font-size: 1.1rem;
+      color: #eee;
+    }
+    /* About Section */
+    .about-section {
+      padding: 5rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about-section h2 {
+      font-size: 2.2rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .about-section p {
+      line-height: 1.8;
+      color: var(--muted-light);
+      margin-bottom: 2rem;
+    }
+
+    body.dark-mode .about-section p {
+      color: var(--muted-dark);
+    }
+
+    .values {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .value-card {
+      background: var(--bg-light);
+      border-radius: 15px;
+      padding: 2rem 1rem;
+      transition: 0.3s;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    body.dark-mode .value-card {
+      background: #111;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .value-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .value-card i {
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .value-card h3 {
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Team Section */
+    .team-section {
+      padding: 5rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .team-section h2 {
+      font-size: 2.2rem;
+      color: var(--gold);
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 2rem;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .team-card {
+      background: var(--bg-light);
+      border-radius: 15px;
+      overflow: hidden;
+      text-align: center;
+      transition: 0.3s;
+      border: 1px solid rgba(212,175,55,0.2);
+    }
+
+    body.dark-mode .team-card {
+      background: #111;
+      border: 1px solid rgba(212,175,55,0.3);
+    }
+
+    .team-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .team-card img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+    }
+
+    .team-info {
+      padding: 1.5rem;
+    }
+
+    .team-info h3 {
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin: 0.5rem 0;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .team-info p {
+      color: var(--muted-light);
+      font-size: 0.95rem;
+    }
+
+    body.dark-mode .team-info p {
+      color: var(--muted-dark);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--bg-dark);
+      color: var(--text-light);
+      text-align: center;
+      padding: 2rem 1rem;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    body:not(.dark-mode) footer {
+      background: var(--bg-light);
+      color: var(--text-dark);
+    }
+
+    .social-icons {
+      margin-top: 1rem;
+    }
+
+    .social-icons a {
+      color: var(--gold);
+      font-size: 1.4rem;
+      margin: 0 0.5rem;
+      transition: 0.3s;
+    }
+
+    .social-icons a:hover {
+      color: #f5d76e;
+    }
+
+    /* MOBILE FIXES */
+    @media (max-width: 768px) {
+      header {
+        flex-wrap: wrap;
+        padding: 0.8rem 1.2rem;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        margin-top: 1rem;
+      }
+
+      nav.active {
+        display: flex;
+      }
+
+      nav a {
+        display: block;
+        text-align: center;
+        width: 100%;
+        padding: 0.8rem 0;
+      }
+
+      .btn-group {
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.5rem;
+      }
+    }
+
+        nav a {
+      text-decoration: none;
+      color: inherit;
+      margin: 0 1rem;
+      font-weight: 500;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0%;
+      height: 2px;
+      background: var(--gold);
+      transition: 0.3s;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    nav a.active {
+      color: var(--gold);
+    }
+
+    body.dark-mode nav a.active {
+      color: #f5d76e;
+    }
+
+    nav a.active::after {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="homepage2.html" class="logo">
+    <img src="assets/logo/the_stackly_logo.png" alt="STACKLY Logo" class="logo-img">
+    <span class="brand-name">STACKLY</span>
+  </a>
+
+  <nav>
+    <a href="homepage2.html">Home</a>
+    <a href="shop2.html" class="active">Shop</a>
+    <a href="about2.html">About</a>
+    <a href="gallery2.html">Gallery</a>
+    <a href="contact2.html">Contact</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+
+  <div class="btn-group">
+    <a href="login.html" class="btn">Login</a>
+    <a href="register.html" class="btn">Register</a>
+    <i id="modeToggle" class="ri-moon-line"></i>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Shop the Collection</h1>
+    <p>Curated looks crafted to elevate your style statement.</p>
+  </div>
+</section>
+
+  <!-- Product Grid: restored full set (8 cards) with prices -->
+  <section class="shop-grid" aria-label="Products">
+    <div class="product-card" data-sku="urban-casual">
+      <img src="https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=800&q=80" alt="Urban Casual">
+      <div class="product-info">
+        <h3>Urban Casual</h3>
+        <p>Modern comfort for daily wear.</p>
+        <div class="price">₹1,499</div>
+        <button type="button" data-price="1499">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-sku="classic-elegance">
+      <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80" alt="Classic Elegance">
+      <div class="product-info">
+        <h3>Classic Elegance</h3>
+        <p>Timeless outfits that define class.</p>
+        <div class="price">₹1,099</div>
+        <button type="button" data-price="1099">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-sku="boho-style">
+      <img src="https://images.unsplash.com/photo-1520694478166-daaaaec95b69?auto=format&fit=crop&w=800&q=80" alt="Boho Style">
+      <div class="product-info">
+        <h3>Boho Style</h3>
+        <p>Unleash your inner free spirit.</p>
+        <div class="price">₹899</div>
+        <button type="button" data-price="899">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-sku="modern-minimal">
+      <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80" alt="Modern Minimal">
+      <div class="product-info">
+        <h3>Modern Minimal</h3>
+        <p>Simple, sleek, and stunning.</p>
+        <div class="price">₹1,299</div>
+        <button type="button" data-price="1299">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-sku="luxury-streetwear">
+      <img src="https://images.unsplash.com/photo-1537832816519-689ad163238b?auto=format&fit=crop&w=800&q=80" alt="Luxury Streetwear">
+      <div class="product-info">
+        <h3>Luxury Streetwear</h3>
+        <p>Street style meets sophistication.</p>
+        <div class="price">₹1,599</div>
+        <button type="button" data-price="1599">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-sku="evening-glam">
+      <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80" alt="Evening Glam">
+      <div class="product-info">
+        <h3>Evening Glam</h3>
+        <p>Make every night unforgettable.</p>
+        <div class="price">₹1,899</div>
+        <button type="button" data-price="1899">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-sku="ethnic-essence">
+      <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80" alt="Ethnic Essence">
+      <div class="product-info">
+        <h3>Ethnic Essence</h3>
+        <p>Traditional elegance reimagined.</p>
+        <div class="price">₹1,199</div>
+        <button type="button" data-price="1199">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product-card" data-sku="designer-edit">
+      <img src="https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=800&q=80" alt="Designer Edit">
+      <div class="product-info">
+        <h3>Designer Edit</h3>
+        <p>Exclusive connoisseur pieces.</p>
+        <div class="price">₹2,199</div>
+        <button type="button" data-price="2199">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+
+<footer>
+  <p>© 2025 STACKLY | All Rights Reserved</p>
+  <div class="social-icons">
+    <a href="404.html"><i class="ri-mail-line"></i></a>
+    <a href="404.html"><i class="ri-linkedin-fill"></i></a>
+    <a href="404.html"><i class="ri-twitter-x-line"></i></a>
+    <a href="404.html"><i class="ri-facebook-fill"></i></a>
+    <a href="404.html"><i class="ri-instagram-line"></i></a>
+  </div>
+</footer>
+
+<div class="toast-wrap" id="toasts" aria-live="polite"></div>
+
+<script>
+  // Theme toggle
+  const toggle = document.getElementById('modeToggle');
+  const body = document.body;
+  if(localStorage.getItem('mode')==='dark'){body.classList.add('dark-mode'); toggle.classList.replace('ri-moon-line','ri-sun-line');}
+  toggle.addEventListener('click',()=>{body.classList.toggle('dark-mode'); const dark=body.classList.contains('dark-mode'); localStorage.setItem('mode',dark?'dark':'light'); toggle.classList.toggle('ri-sun-line',dark); toggle.classList.toggle('ri-moon-line',!dark);});
+
+  // Hamburger
+  const hamburger=document.createElement('div'); hamburger.classList.add('hamburger'); hamburger.innerHTML='<i class="ri-menu-line"></i>'; document.querySelector('header').appendChild(hamburger);
+  const nav=document.querySelector('header nav');
+  hamburger.addEventListener('click',()=>{nav.classList.toggle('active');});
+
+  // Toast helper
+  function showToast(message){ const wrap=document.getElementById('toasts'); const t=document.createElement('div'); t.className='toast'; t.textContent=message; wrap.appendChild(t); requestAnimationFrame(()=>t.classList.add('show')); setTimeout(()=>{t.classList.remove('show'); setTimeout(()=>t.remove(),220);},900); }
+
+  // Add to cart
+  (function(){
+    const productCards=document.querySelectorAll('.shop-grid .product-card');
+    productCards.forEach(card=>{
+      const btn=card.querySelector('button');
+      btn.addEventListener('click',()=>{
+        const name=card.querySelector('h3').innerText.trim();
+        const desc=card.querySelector('p').innerText.trim();
+        const img=card.querySelector('img').src;
+        const price=Number(btn.dataset.price)||parseFloat(card.querySelector('.price')?.innerText.replace(/[^\d.]/g,''))||0;
+        let cart=[];
+        try{cart=JSON.parse(localStorage.getItem('stackly-cart2'))||[];}catch(e){}
+        const found=cart.find(i=>i.name===name);
+        if(found){found.quantity=(Number(found.quantity)||0)+1;}else{cart.push({name,desc,img,price,quantity:1});}
+        localStorage.setItem('stackly-cart2',JSON.stringify(cart));
+        showToast('Item added to cart!');
+        setTimeout(()=>{window.location.href='cart2.html';},900);
+      });
+    });
+  })();
+
+  // Nav active highlight
+  const currentPath=window.location.pathname.split("/").pop();
+  document.querySelectorAll('nav a').forEach(a=>{if(a.getAttribute('href')===currentPath){a.classList.add('active');}else{a.classList.remove('active');}});
+</script>
+  <script>
+    // Dark mode toggle
+    const toggle = document.getElementById('modeToggle');
+    const body = document.body;
+    if(localStorage.getItem('mode') === 'dark') {
+      body.classList.add('dark-mode');
+      toggle.classList.replace('ri-moon-line','ri-sun-line');
+    }
+    toggle.addEventListener('click',()=>{
+      body.classList.toggle('dark-mode');
+      const dark = body.classList.contains('dark-mode');
+      localStorage.setItem('mode', dark ? 'dark' : 'light');
+      toggle.classList.toggle('ri-sun-line', dark);
+      toggle.classList.toggle('ri-moon-line', !dark);
+    });
+
+    // Hamburger toggle
+    const hamburger = document.querySelector('.hamburger');
+    const nav = document.querySelector('nav');
+    hamburger.addEventListener('click',()=>{ nav.classList.toggle('active'); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STACKLY | Cart</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --black: #000;
+      --white: #fff;
+      --text-dark: #111;
+      --text-light: #f5f5f5;
+      --bg-light: #fff;
+      --bg-dark: #0b0b0b;
+      --muted-light: #555;
+      --muted-dark: #bbb;
+      --shadow: 0 14px 40px rgba(0,0,0,0.12);
+      --card-radius: 14px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      transition: background 0.4s, color 0.4s;
+      padding-top: 86px;
+    }
+    body.dark-mode { background-color: var(--bg-dark); color: var(--text-light); }
+
+    /* Header (from shop2.html) */
+    header {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: var(--bg-light); display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 2rem; z-index: 1000; transition: background 0.4s,color 0.4s;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05); flex-wrap: wrap;
+    }
+    body.dark-mode header { background: var(--bg-dark); box-shadow:0 2px 10px rgba(255,255,255,0.05); }
+
+    .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .logo-img { height:50px; width:auto; transition:transform .3s ease; }
+    .logo-img:hover { transform:scale(1.05); }
+    .brand-name { font-size:1.6rem; font-weight:700; color:var(--gold); font-family:'Poppins',sans-serif; letter-spacing:1px; }
+
+    nav a { text-decoration:none; color:inherit; margin:0 1rem; font-weight:500; position:relative; }
+    nav a::after { content:''; position:absolute; left:0; bottom:-5px; width:0%; height:2px; background:var(--gold); transition:.3s; }
+    nav a:hover::after { width:100%; }
+    nav a.active { color:var(--gold); } body.dark-mode nav a.active { color:#f5d76e; } 
+    nav a.active::after { width:100%; }
+
+    .btn-group { display:flex; align-items:center; gap:1rem; }
+    .btn { padding:.5rem 1rem; border-radius:20px; border:1px solid var(--gold); color:var(--gold); background:transparent; font-weight:500; cursor:pointer; transition:.3s; text-decoration:none; }
+    .btn:hover { background: var(--gold); color: var(--black); }
+    #modeToggle { font-size:1.4rem; cursor:pointer; color: var(--gold); transition:transform .3s; }
+    #modeToggle:hover { transform:rotate(25deg); }
+
+    /* Hamburger */
+    .hamburger { display:none; font-size:1.8rem; cursor:pointer; z-index:1002; }
+
+    @media(max-width:768px){
+      nav{ display:none; width:100%; flex-direction:column; margin-top:.5rem; }
+      nav a{ padding:.7rem 0; width:100%; text-align:center; }
+      nav.active{ display:flex; }
+      .hamburger{ display:block; }
+      .btn-group{ width:100%; justify-content:center; margin-top:.5rem; }
+      header{ padding:.5rem 1rem; }
+    }
+    @media(max-width:480px){ .brand-name{ font-size:1.3rem; } .logo-img{ height:35px; } }
+
+    /* Cart grid */
+    .container{ max-width:1200px; margin:0 auto; padding:1.25rem; }
+    h1.cart-title{ font-family:'Playfair Display',serif; color:var(--gold); text-align:center; font-size:2.2rem; margin:.6rem 0 .2rem; }
+    p.cart-sub{ color:var(--muted-light); text-align:center; margin:0 0 1rem; }
+
+    .cart-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.25rem; margin:1rem 0 4rem; }
+    .card{ background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.95)); border-radius:var(--card-radius); overflow:hidden; box-shadow:var(--shadow); display:flex; flex-direction:column; transition: transform .18s, box-shadow .18s; }
+    body.dark-mode .card{ background:linear-gradient(180deg, rgba(12,12,12,0.95), rgba(8,8,8,0.95)); }
+
+    .card-media{ height:220px; overflow:hidden; } 
+    .card-media img{ width:100%; height:100%; object-fit:cover; transition:transform .5s; }
+    .card:hover .card-media img{ transform:scale(1.05); }
+
+    .card-body{ padding:.9rem 1rem; display:flex; flex-direction:column; gap:.5rem; flex:1; }
+    .card-title{ font-family:'Playfair Display',serif; color:var(--gold); margin:0; font-size:1.05rem; }
+    .card-desc{ color:var(--muted-light); margin:0; font-size:.94rem; }
+    .card-meta{ margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:.6rem; }
+    .price{ font-weight:800; color:var(--gold); }
+    .controls{ display:flex; align-items:center; gap:.5rem; }
+    .qty-btn{ width:36px; height:36px; border-radius:8px; border:none; background:var(--gold); color:#000; font-weight:700; cursor:pointer; }
+    .qty-display{ min-width:32px; text-align:center; font-weight:700; }
+    .remove-btn{ background:none; border:none; color:var(--muted-light); cursor:pointer; font-size:1rem; padding-left:8px; }
+
+    /* Sticky summary */
+    .summary-sticky{ position:fixed; right:28px; bottom:28px; width:360px; border-radius:12px; padding:1rem; box-shadow:var(--shadow); background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.98)); backdrop-filter:blur(6px); z-index:1300; transition: transform .18s, opacity .18s; }
+    body.dark-mode .summary-sticky{ background:linear-gradient(180deg, rgba(12,12,12,0.9), rgba(8,8,8,0.95)); }
+
+    .summary-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:.5rem; }
+    .summary-total{ font-weight:800; color:var(--gold); font-size:1.2rem; }
+    .summary-line{ display:flex; justify-content:space-between; color:var(--muted-light); margin:.25rem 0; }
+    .summary-actions{ display:flex; flex-direction:column; gap:.5rem; margin-top:.6rem; }
+    .btn-primary{ background:var(--gold); color:#000; border:none; padding:.6rem; border-radius:10px; font-weight:700; cursor:pointer; }
+    .btn-ghost{ background:transparent; border:1px solid rgba(0,0,0,0.06); padding:.55rem; border-radius:10px; cursor:pointer; }
+
+    @media(max-width:900px){ .summary-sticky{ left:16px; right:16px; bottom:14px; width:auto; } }
+
+    .empty{ padding:2rem; border-radius:12px; text-align:center; color:var(--muted-light); box-shadow:var(--shadow); background:linear-gradient(180deg,#fff,#fff); }
+    body.dark-mode .empty{ background:linear-gradient(180deg,#0f0f10,#0f0f10); color:var(--muted-dark); }
+
+    /* Footer (from shop2.html) */
+    footer{ background:var(--bg-dark); color:var(--text-light); text-align:center; padding:2rem 1rem; transition:background .4s, color .4s; }
+    body:not(.dark-mode) footer{ background:var(--bg-light); color:var(--text-dark); }
+    .social-icons{ margin-top:1rem; }
+    .social-icons a{ color:var(--gold); font-size:1.4rem; margin:0 .5rem; transition:.3s; }
+    .social-icons a:hover{ color:#f5d76e; }
+
+    .btn {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  background: transparent;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: underline; /* ALWAYS underlined */
+}
+
+.btn:hover {
+  background: var(--gold);
+  color: var(--black);
+  text-decoration: none; /* removes underline on hover, optional */
+}
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      transition: background 0.4s, color 0.4s;
+    }
+
+    body.dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      z-index: 1000;
+      transition: background 0.4s, color 0.4s;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    body.dark-mode header {
+      background: var(--bg-dark);
+      box-shadow: 0 2px 10px rgba(255,255,255,0.05);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      height: 50px;
+      width: auto;
+      vertical-align: middle;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-img:hover {
+      transform: scale(1.05);
+    }
+
+    .brand-name {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--gold);
+      font-family: "Poppins", sans-serif;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: inherit;
+      margin: 0 1rem;
+      font-weight: 500;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0%;
+      height: 2px;
+      background: var(--gold);
+      transition: 0.3s;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    nav a.active {
+      color: var(--gold);
+    }
+
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      background: transparent;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    #modeToggle {
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--gold);
+      transition: transform 0.3s;
+    }
+
+    #modeToggle:hover {
+      transform: rotate(25deg);
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--gold);
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      z-index: 1001;
+    }
+
+    /* Hero */
+    .hero {
+      background: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      color: var(--white);
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-family: 'Playfair Display', serif;
+      color: var(--gold);
+    }
+
+    .hero p {
+      margin-top: 0.8rem;
+      font-size: 1.1rem;
+      color: #eee;
+    }
+    /* About Section */
+    .about-section {
+      padding: 5rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about-section h2 {
+      font-size: 2.2rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .about-section p {
+      line-height: 1.8;
+      color: var(--muted-light);
+      margin-bottom: 2rem;
+    }
+
+    body.dark-mode .about-section p {
+      color: var(--muted-dark);
+    }
+
+    .values {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .value-card {
+      background: var(--bg-light);
+      border-radius: 15px;
+      padding: 2rem 1rem;
+      transition: 0.3s;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    body.dark-mode .value-card {
+      background: #111;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .value-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .value-card i {
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .value-card h3 {
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Team Section */
+    .team-section {
+      padding: 5rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .team-section h2 {
+      font-size: 2.2rem;
+      color: var(--gold);
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 2rem;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .team-card {
+      background: var(--bg-light);
+      border-radius: 15px;
+      overflow: hidden;
+      text-align: center;
+      transition: 0.3s;
+      border: 1px solid rgba(212,175,55,0.2);
+    }
+
+    body.dark-mode .team-card {
+      background: #111;
+      border: 1px solid rgba(212,175,55,0.3);
+    }
+
+    .team-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .team-card img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+    }
+
+    .team-info {
+      padding: 1.5rem;
+    }
+
+    .team-info h3 {
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin: 0.5rem 0;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .team-info p {
+      color: var(--muted-light);
+      font-size: 0.95rem;
+    }
+
+    body.dark-mode .team-info p {
+      color: var(--muted-dark);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--bg-dark);
+      color: var(--text-light);
+      text-align: center;
+      padding: 2rem 1rem;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    body:not(.dark-mode) footer {
+      background: var(--bg-light);
+      color: var(--text-dark);
+    }
+
+    .social-icons {
+      margin-top: 1rem;
+    }
+
+    .social-icons a {
+      color: var(--gold);
+      font-size: 1.4rem;
+      margin: 0 0.5rem;
+      transition: 0.3s;
+    }
+
+    .social-icons a:hover {
+      color: #f5d76e;
+    }
+
+    /* MOBILE FIXES */
+    @media (max-width: 768px) {
+      header {
+        flex-wrap: wrap;
+        padding: 0.8rem 1.2rem;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        margin-top: 1rem;
+      }
+
+      nav.active {
+        display: flex;
+      }
+
+      nav a {
+        display: block;
+        text-align: center;
+        width: 100%;
+        padding: 0.8rem 0;
+      }
+
+      .btn-group {
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.5rem;
+      }
+    }
+
+        nav a {
+      text-decoration: none;
+      color: inherit;
+      margin: 0 1rem;
+      font-weight: 500;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0%;
+      height: 2px;
+      background: var(--gold);
+      transition: 0.3s;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    nav a.active {
+      color: var(--gold);
+    }
+
+    body.dark-mode nav a.active {
+      color: #f5d76e;
+    }
+
+    nav a.active::after {
+      width: 100%;
+    }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="homepage2.html" class="logo">
+    <img src="assets/logo/the_stackly_logo.png" alt="STACKLY Logo" class="logo-img">
+    <span class="brand-name">STACKLY</span>
+  </a>
+
+  <nav>
+    <a href="homepage2.html">Home</a>
+    <a href="shop2.html" class="active">Shop</a>
+    <a href="about2.html">About</a>
+    <a href="gallery2.html">Gallery</a>
+    <a href="contact2.html">Contact</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+
+  <div class="btn-group">
+    <a href="login.html" class="btn">Login</a>
+    <a href="register.html" class="btn">Register</a>
+    <i id="modeToggle" class="ri-moon-line"></i>
+  </div>
+</header>
+
+<main class="container">
+  <h1 class="cart-title">Your Cart</h1>
+  <p class="cart-sub">Manage your chosen items. Update quantities or remove items.</p>
+
+  <section id="cartGrid" class="cart-grid"></section>
+  <div id="empty" class="empty" style="display:none; margin-top:12px;">
+    <strong>Your cart is empty</strong>
+    <div style="margin-top:.6rem;"><a href="shop2.html" class="btn">Continue Shopping</a></div>
+  </div>
+</main>
+
+<aside id="summary" class="summary-sticky" style="display:none;">
+  <div class="summary-top">
+    <div>
+      <div style="font-size:.95rem; color:var(--muted-light)">Order Summary</div>
+      <div class="summary-total" id="summaryTotal">₹0.00</div>
+    </div>
+    <div style="font-size:.9rem; color:var(--muted-light)"><span id="summaryCount">0</span> items</div>
+  </div>
+  <div class="summary-line"><span>Subtotal</span><span id="subtotal">₹0.00</span></div>
+  <div class="summary-line"><span>Tax (5%)</span><span id="tax">₹0.00</span></div>
+  <div class="summary-line" style="font-weight:800; margin-top:6px"><span>Total</span><span id="total">₹0.00</span></div>
+  <div class="summary-actions">
+    <a href="shop2.html" class="btn btn-ghost">Continue Shopping</a>
+    <button id="checkoutBtn" class="btn-primary">Checkout</button>
+    <button id="clearBtn" class="btn-ghost">Clear Cart</button>
+  </div>
+</aside>
+
+<footer>
+  <p>© 2025 STACKLY | All Rights Reserved</p>
+  <div class="social-icons">
+    <a href="404.html"><i class="ri-mail-line"></i></a>
+    <a href="404.html"><i class="ri-linkedin-fill"></i></a>
+    <a href="404.html"><i class="ri-twitter-x-line"></i></a>
+    <a href="404.html"><i class="ri-facebook-fill"></i></a>
+    <a href="404.html"><i class="ri-instagram-line"></i></a>
+  </div>
+</footer>
+
+<div class="toast-wrap" id="toasts" aria-live="polite"></div>
+
+<script>
+  // Theme toggle
+  const toggle=document.getElementById('modeToggle'); const body=document.body;
+  if(localStorage.getItem('mode')==='dark'){body.classList.add('dark-mode'); toggle.classList.replace('ri-moon-line','ri-sun-line');}
+  toggle.addEventListener('click',()=>{body.classList.toggle('dark-mode'); const dark=body.classList.contains('dark-mode'); localStorage.setItem('mode',dark?'dark':'light'); toggle.classList.toggle('ri-sun-line',dark); toggle.classList.toggle('ri-moon-line',!dark);});
+
+  // Hamburger
+  const hamburger=document.createElement('div'); hamburger.classList.add('hamburger'); hamburger.innerHTML='<i class="ri-menu-line"></i>'; document.querySelector('header').appendChild(hamburger);
+  const nav=document.querySelector('header nav'); hamburger.addEventListener('click',()=>{nav.classList.toggle('active');});
+
+  // Toast helper
+  function showToast(message){ const wrap=document.getElementById('toasts'); const t=document.createElement('div'); t.className='toast'; t.textContent=message; wrap.appendChild(t); requestAnimationFrame(()=>t.classList.add('show')); setTimeout(()=>{t.classList.remove('show'); setTimeout(()=>t.remove(),220);},900); }
+
+  // Cart logic
+  let cart=[]; try{ cart=JSON.parse(localStorage.getItem('stackly-cart2'))||[]; }catch(e){}
+  const grid=document.getElementById('cartGrid'), emptyBox=document.getElementById('empty');
+  const summary=document.getElementById('summary'), subtotalEl=document.getElementById('subtotal');
+  const taxEl=document.getElementById('tax'), totalEl=document.getElementById('total');
+  const summaryTotalEl=document.getElementById('summaryTotal'), summaryCountEl=document.getElementById('summaryCount');
+  const clearBtn=document.getElementById('clearBtn'), checkoutBtn=document.getElementById('checkoutBtn');
+
+  function render(){
+    grid.innerHTML='';
+    if(!cart.length){ emptyBox.style.display='block'; summary.style.display='none'; return; }
+    emptyBox.style.display='none'; summary.style.display='block';
+    cart.forEach((item,idx)=>{
+      const card=document.createElement('article'); card.className='card';
+      card.innerHTML=`<div class="card-media"><img src="${item.img}" alt="${item.name}"></div>
+      <div class="card-body">
+        <div><h3 class="card-title">${item.name}</h3><p class="card-desc">${item.desc}</p></div>
+        <div class="card-meta">
+          <div class="price">₹${item.price}</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="controls">
+              <button class="qty-btn" data-idx="${idx}" data-op="-">−</button>
+              <div class="qty-display">${item.quantity}</div>
+              <button class="qty-btn" data-idx="${idx}" data-op="+">+</button>
+            </div>
+            <button class="remove-btn" data-idx="${idx}">🗑</button>
+          </div>
+        </div>
+      </div>`;
+      card.querySelectorAll('.qty-btn').forEach(btn=>btn.addEventListener('click',()=>{ const i=Number(btn.dataset.idx); changeQty(i,btn.dataset.op==='+'?1:-1); }));
+      card.querySelector('.remove-btn').addEventListener('click',()=>{ removeItem(Number(card.querySelector('.remove-btn').dataset.idx)); });
+      grid.appendChild(card);
+    });
+    updateSummary(); localStorage.setItem('stackly-cart2',JSON.stringify(cart));
+  }
+
+  function changeQty(idx,delta){ cart[idx].quantity+=delta; if(cart[idx].quantity<=0){ cart.splice(idx,1); } render(); }
+  function removeItem(idx){ cart.splice(idx,1); render(); }
+
+  function updateSummary(){
+    let subtotal=0,count=0; cart.forEach(it=>{subtotal+=it.price*it.quantity; count+=it.quantity;});
+    const tax=subtotal*0.05, grand=subtotal+tax;
+    subtotalEl.textContent='₹'+subtotal.toFixed(2); taxEl.textContent='₹'+tax.toFixed(2); totalEl.textContent='₹'+grand.toFixed(2);
+    summaryTotalEl.textContent='₹'+grand.toFixed(2); summaryCountEl.textContent=count;
+  }
+
+  clearBtn.addEventListener('click',()=>{ if(confirm('Clear all items from cart?')){ cart=[]; render(); } });
+  checkoutBtn.addEventListener('click',()=>{ alert('Checkout placeholder — integrate your flow here.'); });
+
+  render();
+</script>
+  <script>
+    // Dark mode toggle
+    const toggle = document.getElementById('modeToggle');
+    const body = document.body;
+    if(localStorage.getItem('mode') === 'dark') {
+      body.classList.add('dark-mode');
+      toggle.classList.replace('ri-moon-line','ri-sun-line');
+    }
+    toggle.addEventListener('click',()=>{
+      body.classList.toggle('dark-mode');
+      const dark = body.classList.contains('dark-mode');
+      localStorage.setItem('mode', dark ? 'dark' : 'light');
+      toggle.classList.toggle('ri-sun-line', dark);
+      toggle.classList.toggle('ri-moon-line', !dark);
+    });
+
+    // Hamburger toggle
+    const hamburger = document.querySelector('.hamburger');
+    const nav = document.querySelector('nav');
+    hamburger.addEventListener('click',()=>{ nav.classList.toggle('active'); });
+  </script>
+</body>
+</html>

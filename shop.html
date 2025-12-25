@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackly Boutique - Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+:root{
+  --bg:#fafafa; --card:#fff; --text:#222; --muted:#6b6b6b;
+  --accent:#f72585; --accent-dark:#d31e69; --glass:rgba(255,255,255,0.65);
+  --header-h:88px; --radius:18px;
+}
+[data-theme='dark']{
+  --bg:#0b0b0c; --card:#0f0f10; --text:#f1f1f1; --muted:#bdbdbd;
+  --accent:#ff6aa3; --accent-dark:#cc578c; --glass:rgba(255,255,255,0.04);
+}
+*{box-sizing:border-box;}
+body{margin:0; padding-top:var(--header-h); font-family:'Poppins',sans-serif; background:var(--bg); color:var(--text); transition:0.25s;}
+header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0.5rem 1rem;background:linear-gradient(180deg,var(--glass),rgba(0,0,0,0));backdrop-filter:blur(6px);z-index:1200;flex-wrap:wrap;}
+.logo a{display:flex;align-items:center;gap:0.7rem;text-decoration:none;color:var(--accent);font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;}
+.logo img{height:40px;width:auto;}
+nav#mainNav{display:flex; gap:1.5rem;}
+nav#mainNav a{color:var(--text); text-decoration:none; font-weight:600; text-transform:uppercase; font-size:0.95rem; cursor:pointer;}
+nav#mainNav a:hover, nav#mainNav a[aria-current="page"]{color:var(--accent);}
+.actions{display:flex;gap:0.8rem;align-items:center;}
+.actions button,.actions a{padding:0.5rem 1.2rem;border-radius:25px;font-weight:600;font-size:0.95rem;border:2px solid transparent;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;transition:0.3s;}
+.actions button#themeToggle{background:transparent;color:var(--text);border:2px solid var(--text);}
+.actions button#themeToggle:hover{background:var(--accent);border-color:var(--accent);color:white;}
+.actions a.login{background:transparent;color:var(--accent);border:2px solid var(--accent);}
+.actions a.login:hover{background:var(--accent);color:white;}
+.actions a.register{background:var(--accent);color:white;border:2px solid var(--accent);}
+.actions a.register:hover{background:var(--accent-dark);}
+main{max-width:1200px;margin:2rem auto;padding:0 6vw;}
+main h1{font-family:'Playfair Display',serif;font-size:2.5rem;text-align:center;margin-bottom:2rem;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:0 8px 30px rgba(0,0,0,0.08);overflow:hidden;transition:transform 0.3s,box-shadow 0.3s;display:flex;flex-direction:column;}
+.card:hover{transform:translateY(-8px);box-shadow:0 20px 45px rgba(0,0,0,0.12);}
+.card img{width:100%;height:320px;object-fit:cover;}
+.card-content{padding:1rem 1rem 1.5rem;flex:1;display:flex;flex-direction:column;justify-content:space-between;}
+.card-content h3{margin:0 0 0.5rem;font-size:1.2rem;}
+.card-content p{color:var(--muted);font-size:0.95rem;line-height:1.4;}
+.card-content .price{margin-top:0.5rem;font-weight:700;color:var(--accent);}
+.add-to-cart{margin-top:1rem;padding:0.6rem;border:none;border-radius:25px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer;transition:0.3s;}
+.add-to-cart:hover{background:var(--accent-dark);}
+footer{background:var(--card);color:var(--muted);font-size:0.95rem;margin-top:4rem;}
+footer .social-icons{margin-bottom:1.4rem;font-size:1.6rem;display:flex;justify-content:center;gap:1.2rem;}
+footer .social-icons a{color:var(--muted);transition:0.3s;}
+footer .social-icons a:hover{color:var(--accent);}
+.hamburger{display:none;font-size:1.8rem;background:none;border:none;cursor:pointer;}
+@media(max-width:768px){
+  nav#mainNav{display:none;flex-direction:column;width:100%;margin-top:0.5rem;}
+  nav#mainNav.active{display:flex;}
+  nav#mainNav a{text-align:center;width:100%;padding:0.7rem 0;}
+  .hamburger{display:block;}
+}
+.hamburger i{color:var(--text);}
+[data-theme='dark'] .hamburger i{color:#fff;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <a href="index.html"><img src="assets/logo/the_stackly_logo.png" alt="Stackly Logo"><span>STACKLY</span></a>
+  </div>
+  <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false"><i class="fa fa-bars"></i></button>
+  <nav id="mainNav" aria-label="Primary navigation">
+    <a href="index.html">Home</a>
+    <a href="shop.html" aria-current="page">Shop</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+  <div class="actions">
+    <button id="themeToggle" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+    <a href="login.html" class="login">Login</a>
+    <a href="register.html" class="register">Register</a>
+  </div>
+</header>
+
+<main>
+  <h1>Shop Our Boutique</h1>
+  <div class="grid">
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80" alt="Lavender Chic Dress">
+      <div class="card-content">
+        <div>
+          <h3>Lavender Chic Dress</h3>
+          <p>Flowy, elegant, and perfect for modern evening wear.</p>
+          <div class="price">$149</div>
+        </div>
+        <button class="add-to-cart" data-name="Lavender Chic Dress" data-price="149" data-image="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1463107971871-fbac9ddb920f?auto=format&fit=crop&w=900&q=80" alt="Classic White Blouse">
+      <div class="card-content">
+        <div>
+          <h3>Classic White Blouse</h3>
+          <p>A timeless style essential for every wardrobe.</p>
+          <div class="price">$79</div>
+        </div>
+        <button class="add-to-cart" data-name="Classic White Blouse" data-price="79" data-image="https://images.unsplash.com/photo-1463107971871-fbac9ddb920f?auto=format&fit=crop&w=900&q=80">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&w=900&q=80" alt="Trendy Summer Hat">
+      <div class="card-content">
+        <div>
+          <h3>Trendy Summer Hat</h3>
+          <p>Keep cool and stylish through the sunny days.</p>
+          <div class="price">$45</div>
+        </div>
+        <button class="add-to-cart" data-name="Trendy Summer Hat" data-price="45" data-image="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&w=900&q=80">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80" alt="Classic Leather Handbag">
+      <div class="card-content">
+        <div>
+          <h3>Classic Leather Handbag</h3>
+          <p>A versatile, timeless accessory in rich tan leather.</p>
+          <div class="price">$199</div>
+        </div>
+        <button class="add-to-cart" data-name="Classic Leather Handbag" data-price="199" data-image="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1504151932400-72d4384f04b3?auto=format&fit=crop&w=900&q=80" alt="Stylish Black Ankle Boots">
+      <div class="card-content">
+        <div>
+          <h3>Stylish Black Ankle Boots</h3>
+          <p>Comfortable heels, perfect for every season.</p>
+          <div class="price">$120</div>
+        </div>
+        <button class="add-to-cart" data-name="Stylish Black Ankle Boots" data-price="120" data-image="https://images.unsplash.com/photo-1504151932400-72d4384f04b3?auto=format&fit=crop&w=900&q=80">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1542068829-1115f7259450?auto=format&fit=crop&w=900&q=80" alt="Elegant Silk Scarf">
+      <div class="card-content">
+        <div>
+          <h3>Elegant Silk Scarf</h3>
+          <p>Subtle floral pattern to add charm and warmth.</p>
+          <div class="price">$60</div>
+        </div>
+        <button class="add-to-cart" data-name="Elegant Silk Scarf" data-price="60" data-image="https://images.unsplash.com/photo-1542068829-1115f7259450?auto=format&fit=crop&w=900&q=80">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Footer copied exactly from Contact page -->
+<footer>
+  <div style="max-width:1200px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:space-between; gap:2rem; padding:2.5rem 6vw;">
+    <div style="flex:1; min-width:220px;">
+      <a href="index.html" style="display:flex; align-items:center; gap:0.5rem; text-decoration:none; color:var(--accent); font-family:'Playfair Display', serif; font-size:1.4rem; font-weight:700;">
+        <img src="assets/logo/the_stackly_logo.png" alt="Stackly Logo" style="height:35px; width:auto;"> STACKLY
+      </a>
+      <p style="color:var(--muted); margin-top:0.8rem; line-height:1.5;">
+        Stackly Boutique<br>
+        123 Fashion Avenue, New Delhi, India<br>
+        Email: info@stackly.com<br>
+        Phone: +91 98765 43210
+      </p>
+    </div>
+    <div style="flex:1; min-width:150px;">
+      <h3 style="font-family:'Playfair Display', serif; color:var(--accent); margin-bottom:0.8rem;">Quick Links</h3>
+      <ul style="list-style:none; padding:0; margin:0; line-height:2;">
+        <li><a href="index.html" style="color:var(--muted); text-decoration:none;">Home</a></li>
+        <li><a href="shop.html" style="color:var(--muted); text-decoration:none;">Shop</a></li>
+        <li><a href="about.html" style="color:var(--muted); text-decoration:none;">About</a></li>
+        <li><a href="contact.html" style="color:var(--muted); text-decoration:none;">Contact</a></li>
+        <li><a href="dashboard.html" style="color:var(--muted); text-decoration:none;">Dashboard</a></li>
+        <li><a href="login.html" style="color:var(--muted); text-decoration:none;">Login</a></li>
+        <li><a href="register.html" style="color:var(--muted); text-decoration:none;">Register</a></li>
+      </ul>
+    </div>
+    <div style="flex:1; min-width:150px;">
+      <h3 style="font-family:'Playfair Display', serif; color:var(--accent); margin-bottom:0.8rem;">Follow Us</h3>
+      <div class="social-icons" style="font-size:1.5rem; display:flex; gap:1rem;">
+        <a href="404.html" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="404.html" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="404.html" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="404.html" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="404.html" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center; color:var(--muted); margin-top:1rem;">
+    &copy; 2025 Stackly. All rights reserved.
+  </div>
+</footer>
+
+<script>
+// Theme toggle
+const themeToggle=document.getElementById('themeToggle');
+const root=document.documentElement;
+const hamburgerIcon=document.querySelector('.hamburger i');
+
+function applyTheme(theme){
+  if(theme==='dark'){
+    root.setAttribute('data-theme','dark');
+    themeToggle.setAttribute('aria-pressed','true');
+    themeToggle.innerHTML='<i class="fa-solid fa-sun"></i>';
+    hamburgerIcon.style.color = '#fff';
+  } else {
+    root.removeAttribute('data-theme');
+    themeToggle.setAttribute('aria-pressed','false');
+    themeToggle.innerHTML='<i class="fa-solid fa-moon"></i>';
+    hamburgerIcon.style.color = '#222';
+  }
+}
+const savedTheme=localStorage.getItem('stackly-theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+applyTheme(savedTheme);
+themeToggle.addEventListener('click',()=>{
+  const current=root.getAttribute('data-theme')==='dark'?'light':'dark';
+  applyTheme(current);
+  localStorage.setItem('stackly-theme',current);
+});
+
+// Hamburger toggle
+const hamburger=document.querySelector('.hamburger');
+const nav=document.getElementById('mainNav');
+hamburger.addEventListener('click',()=>{
+  nav.classList.toggle('active');
+  hamburger.setAttribute('aria-expanded', nav.classList.contains('active'));
+});
+
+// Add to Cart
+const buttons=document.querySelectorAll('.add-to-cart');
+buttons.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const name=btn.dataset.name;
+    const price=parseFloat(btn.dataset.price);
+    const image=btn.dataset.image;
+    let cart=JSON.parse(localStorage.getItem('stackly-cart'))||[];
+    const existing=cart.find(i=>i.name===name);
+    if(existing){existing.quantity+=1;}
+    else{cart.push({name,price,image,quantity:1});}
+    localStorage.setItem('stackly-cart',JSON.stringify(cart));
+    window.location.href='cart.html';
+  });
+});
+</script>
+
+</body>
+</html>

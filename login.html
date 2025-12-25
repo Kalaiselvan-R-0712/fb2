@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Login | Stackly Cloud</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+:root{
+  --bg:#fafafa;--card:#fff;--text:#222;--muted:#6b6b6b;
+  --accent:#f72585;--accent-dark:#d31e69;--glass:rgba(255,255,255,0.65);
+  --radius:18px;
+}
+[data-theme='dark']{
+  --bg:#0b0b0c;--card:#0f0f10;--text:#f1f1f1;--muted:#bdbdbd;
+  --accent:#ff6aa3;--accent-dark:#cc578c;--glass:rgba(255,255,255,0.04);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;padding-top:88px;font-family:'Poppins',sans-serif;
+  background:var(--bg);color:var(--text);transition:0.25s;
+}
+header{
+  position:fixed;top:0;left:0;right:0;display:flex;
+  justify-content:space-between;align-items:center;
+  padding:0.5rem 1rem;background:linear-gradient(180deg,var(--glass),rgba(0,0,0,0));
+  backdrop-filter:blur(6px);z-index:1200;flex-wrap:wrap;
+}
+.logo a{
+  display:flex;align-items:center;gap:0.7rem;text-decoration:none;
+  color:var(--accent);font-family:'Playfair Display',serif;
+  font-size:1.6rem;font-weight:700;
+}
+.logo img{height:40px;width:auto;}
+.actions{display:flex;gap:0.8rem;align-items:center;}
+.actions button{
+  padding:0.5rem 1.2rem;border-radius:25px;font-weight:600;font-size:0.95rem;
+  border:2px solid transparent;cursor:pointer;display:inline-flex;
+  align-items:center;justify-content:center;transition:0.3s;
+}
+.actions button#themeToggle{
+  background:transparent;color:var(--text);border:2px solid var(--text);
+}
+.actions button#themeToggle:hover{
+  background:var(--accent);border-color:var(--accent);color:white;
+}
+main{
+  max-width:1200px;margin:4rem auto;padding:0 6vw;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  min-height:60vh;text-align:center;
+}
+.role-toggle{
+  display:inline-flex;background:var(--card);border-radius:9999px;
+  padding:0.25rem;box-shadow:0 4px 20px rgba(0,0,0,0.08);margin-bottom:2rem;
+}
+.role-toggle button{
+  padding:0.6rem 1.5rem;border:none;background:transparent;
+  border-radius:9999px;font-weight:600;font-size:0.95rem;
+  color:var(--text);cursor:pointer;transition:0.3s;
+}
+.role-toggle button.active{background:var(--accent);color:#fff;}
+.login-card{
+  background:var(--card);box-shadow:0 8px 30px rgba(0,0,0,0.08);
+  border-radius:var(--radius);padding:2rem 2.5rem;width:100%;
+  max-width:420px;transition:0.3s ease;
+}
+.login-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 20px 45px rgba(0,0,0,0.12);
+}
+.login-card h1{
+  font-family:'Playfair Display',serif;font-size:2rem;
+  margin-bottom:1.5rem;color:var(--accent);
+}
+
+/* KEY FIX: wrap input + icon in .field-inner so error messages below don't affect icon centering */
+.input-group{position:relative;width:100%;margin:0.8rem 0;}
+.field-inner{position:relative;}
+.field-inner input{
+  width:100%;padding:0.8rem 1rem;padding-right:2.8rem;
+  border:2px solid var(--muted);border-radius:var(--radius);
+  font-size:1rem;background:transparent;color:var(--text);
+  transition:0.3s;
+}
+.field-inner input:focus{outline:none;border-color:var(--accent);}
+.field-inner .toggle-password{
+  position:absolute;right:1rem;top:50%;transform:translateY(-50%);
+  cursor:pointer;color:var(--muted);transition:0.2s; z-index:10;
+}
+.field-inner .toggle-password:hover{color:var(--accent);}
+
+/* tooltips remain same */
+.tooltip{
+  position:absolute;bottom:110%;left:0;background:var(--card);
+  color:var(--accent-dark);border:1px solid var(--accent);
+  padding:0.4rem 0.7rem;border-radius:6px;font-size:0.85rem;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  opacity:0;pointer-events:none;transition:opacity 0.25s;z-index:100;
+}
+.tooltip.active{opacity:1;}
+
+/* ERROR: now placed *outside* .field-inner so they don't change input height/center */
+.error-message{
+  color:#ff3b3b;font-size:0.85rem;margin-top:0.4rem;
+  text-align:left;font-weight:500;
+  /* ensure no absolute positioning so it pushes naturally below input */
+  position:static;
+}
+
+/* rest unchanged */
+.login-card button{
+  width:100%;padding:0.9rem;background:var(--accent);
+  color:#fff;border:none;border-radius:var(--radius);
+  font-weight:600;font-size:1rem;margin-top:1rem;cursor:pointer;
+  transition:0.3s;
+}
+.login-card button:hover{background:var(--accent-dark);}
+.login-card p{color:var(--muted);margin-top:1rem;font-size:0.95rem;}
+.login-card a{color:var(--accent);text-decoration:none;font-weight:600;}
+.login-card a:hover{text-decoration:underline;}
+footer{
+  background:var(--card);padding:2.5rem 6vw;text-align:center;
+  color:var(--muted);font-size:0.95rem;
+}
+footer .social-icons{
+  margin-bottom:1.4rem;font-size:1.6rem;
+  display:flex;justify-content:center;gap:1.2rem;
+}
+footer .social-icons a{color:var(--muted);transition:0.3s;}
+footer .social-icons a:hover{color:var(--accent);}
+@media(max-width:600px){
+  .login-card{padding:1.5rem;}
+  .tooltip{font-size:0.8rem;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    <a href="index.html"><img src="assets/logo/the_stackly_logo.png" alt="Stackly Logo"><span>STACKLY</span></a>
+  </div>
+  <div class="actions">
+    <button id="themeToggle"><i class="fa-solid fa-moon"></i></button>
+  </div>
+</header>
+
+<main>
+  <div class="role-toggle">
+    <button id="customerBtn" class="active">Customer</button>
+    <button id="adminBtn">Admin</button>
+  </div>
+
+  <div class="login-card">
+    <h1 id="loginTitle">Customer Login</h1>
+    <form id="loginForm" novalidate>
+      <!-- EMAIL: field-inner contains input and icon (none here) -->
+      <div class="input-group">
+        <div class="field-inner">
+          <input type="email" id="email" placeholder="Email Address" required>
+        </div>
+        <div class="tooltip" id="emailTip">Example: user@domain.com</div>
+        <!-- error now sits outside the .field-inner -->
+        <div class="error-message" id="emailError"></div>
+      </div>
+
+      <!-- PASSWORD: field-inner ensures icon stays vertically centered relative to input only -->
+      <div class="input-group">
+        <div class="field-inner">
+          <input type="password" id="password" placeholder="Password" required>
+          <i class="fa-solid fa-eye toggle-password" id="togglePassword" aria-hidden="true"></i>
+        </div>
+        <div class="tooltip" id="passTip">Password must include A-Z, a-z, 0-9 & special character</div>
+        <!-- error placed below the field-inner so it doesn't change the icon vertical alignment -->
+        <div class="error-message" id="passError"></div>
+      </div>
+
+      <button type="submit">Login</button>
+      <p><a href="#" id="forgotPassword">Forgot Password?</a></p>
+      <p>Don’t have an account? <a href="register.html">Register</a></p>
+      <p><a href="index.html">Continue as Guest</a></p>
+    </form>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-content">
+    <div class="logo-footer">
+      <a href="index.html" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;text-decoration:none;color:var(--accent);font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;">
+        <img src="assets/logo/the_stackly_logo.png" alt="Stackly Logo" style="height:35px;width:auto;"> STACKLY
+      </a>
+    </div>
+    <div>
+      <p style="line-height:1.6;">
+        Stackly Boutique<br>
+        123 Fashion Avenue, New Delhi, India<br>
+        Email: info@stackly.com<br>
+        Phone: +91 98765 43210
+      </p>
+    </div>
+    <div class="social-icons">
+      <a href="404.html"><i class="fa-solid fa-envelope"></i></a>
+      <a href="404.html"><i class="fab fa-linkedin-in"></i></a>
+      <a href="404.html"><i class="fab fa-twitter"></i></a>
+      <a href="404.html"><i class="fab fa-facebook-f"></i></a>
+      <a href="404.html"><i class="fab fa-instagram"></i></a>
+    </div>
+  </div>
+  <p>&copy; 2025 Stackly. All rights reserved.</p>
+</footer>
+
+<script>
+// Theme toggle
+const themeToggle=document.getElementById('themeToggle');
+const root=document.documentElement;
+function applyTheme(theme){
+  if(theme==='dark'){root.setAttribute('data-theme','dark');themeToggle.innerHTML='<i class="fa-solid fa-sun"></i>';}
+  else{root.removeAttribute('data-theme');themeToggle.innerHTML='<i class="fa-solid fa-moon"></i>';}
+}
+const savedTheme=localStorage.getItem('stackly-theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+applyTheme(savedTheme);
+themeToggle.addEventListener('click',()=>{
+  const current=root.getAttribute('data-theme')==='dark'?'light':'dark';
+  applyTheme(current);
+  localStorage.setItem('stackly-theme',current);
+});
+
+// Role toggle
+const customerBtn=document.getElementById('customerBtn');
+const adminBtn=document.getElementById('adminBtn');
+const loginTitle=document.getElementById('loginTitle');
+customerBtn.onclick=()=>{
+  customerBtn.classList.add('active');
+  adminBtn.classList.remove('active');
+  loginTitle.textContent='Customer Login';
+};
+adminBtn.onclick=()=>{
+  adminBtn.classList.add('active');
+  customerBtn.classList.remove('active');
+  loginTitle.textContent='Admin Login';
+};
+
+// Password toggle
+const togglePassword=document.getElementById('togglePassword');
+const passwordInput=document.getElementById('password');
+togglePassword.addEventListener('click',()=>{
+  const type=passwordInput.getAttribute('type')==='password'?'text':'password';
+  passwordInput.setAttribute('type',type);
+  togglePassword.classList.toggle('fa-eye-slash');
+});
+
+// Tooltips
+const emailInput=document.getElementById('email');
+const passwordField=document.getElementById('password');
+const emailTip=document.getElementById('emailTip');
+const passTip=document.getElementById('passTip');
+
+emailInput.addEventListener('focus',()=>emailTip.classList.add('active'));
+emailInput.addEventListener('blur',()=>emailTip.classList.remove('active'));
+passwordField.addEventListener('focus',()=>passTip.classList.add('active'));
+passwordField.addEventListener('blur',()=>passTip.classList.remove('active'));
+
+// Validation + Login
+document.getElementById('loginForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const email=emailInput.value.trim();
+  const password=passwordField.value.trim();
+  const emailError=document.getElementById('emailError');
+  const passError=document.getElementById('passError');
+  emailError.textContent=''; passError.textContent='';
+
+  const emailPattern=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  const passPattern=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[%&!@#\$^+=]).{8,}$/;
+
+  let valid=true;
+
+  if(!emailPattern.test(email)){
+    emailError.textContent="Please enter a valid email address (e.g. user@domain.com)";
+    valid=false;
+  }
+  if(!passPattern.test(password)){
+    passError.textContent="Password must have A-Z, a-z, 0-9, and a special character (%&!@# etc)";
+    valid=false;
+  }
+
+  if(!valid) return;
+
+  // Success redirect
+  alert('Login successful! Redirecting...');
+  setTimeout(()=>{window.location.href='404.html';},1000);
+});
+
+// Forgot Password
+document.getElementById('forgotPassword').addEventListener('click',function(e){
+  e.preventDefault();
+  window.location.href='404.html';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackly Boutique - Ultra Modern Fashion</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+:root{
+  --bg:#fafafa; --card:#fff; --text:#222; --muted:#6b6b6b;
+  --accent:#f72585; --accent-dark:#d31e69; --glass:rgba(255,255,255,0.65);
+  --header-h:88px; --radius:18px;
+}
+[data-theme='dark']{
+  --bg:#0b0b0c; --card:#0f0f10; --text:#f1f1f1; --muted:#bdbdbd;
+  --accent:#ff6aa3; --accent-dark:#cc578c; --glass:rgba(255,255,255,0.04);
+}
+*{box-sizing:border-box;}
+body{margin:0; padding-top:var(--header-h); font-family:'Poppins', sans-serif; background:var(--bg); color:var(--text); transition:0.25s; overflow-x:hidden;}
+
+
+/* ================= HEADER ================= */
+header{
+  position:fixed; top:0; left:0; right:0;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:0.5rem 5vw;
+  background:linear-gradient(180deg,var(--glass),rgba(0,0,0,0));
+  backdrop-filter:blur(6px);
+  z-index:1200;
+}
+.logo a{
+  display:flex; align-items:center; gap:0.7rem;
+  text-decoration:none; color:var(--accent);
+  font-family:'Playfair Display', serif;
+  font-size:1.6rem; font-weight:700;
+}
+.logo img{height:40px;}
+nav#mainNav{display:flex; gap:1.5rem; align-items:center;}
+nav#mainNav a:not(.dropdown-content a),
+.dropbtn{
+  color:var(--text);
+  text-decoration:none;
+  font-weight:600;
+  text-transform:uppercase;
+  font-size:0.95rem;
+  cursor:pointer;
+  background:none;
+  border:none;
+  display:flex;
+  align-items:center;
+  gap:0.3rem;
+  position:relative;
+  transition:0.3s;
+}
+nav#mainNav a::after,
+.dropbtn::after{
+  content:'';
+  position:absolute;
+  bottom:-5px;
+  left:0;
+  width:0;
+  height:2px;
+  background:var(--accent);
+  transition:width 0.3s;
+}
+nav#mainNav a:hover::after,
+.dropbtn:hover::after{width:100%;}
+nav#mainNav a:hover,
+.dropbtn:hover{color:var(--accent); transform:translateY(-2px) scale(1.05);}
+.dropdown{position:relative;}
+.dropbtn i{transition:0.3s;}
+.dropdown.open .dropbtn i{transform:rotate(180deg);}
+.dropdown-content{
+  display:none;
+  position:absolute;
+  top:100%; left:0;
+  background:var(--card);
+  min-width:160px;
+  border-radius:var(--radius);
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
+  flex-direction:column;
+  z-index:1500;
+  opacity:0;
+  transform:translateY(-10px) scaleY(0.8);
+  transition:all 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+  max-height:0;
+  overflow:hidden;
+}
+.dropdown.open .dropdown-content{
+  display:flex;
+  opacity:1;
+  transform:translateY(0) scaleY(1);
+  max-height:300px;
+}
+.dropdown-content a{
+  padding:0.8rem 1.2rem;
+  font-size:0.9rem;
+  color:var(--text);
+  transition:0.3s;
+}
+.dropdown-content a:hover{
+  background:var(--accent);
+  color:white;
+  transform:translateX(5px);
+}
+.actions{
+  display:flex; gap:0.8rem; align-items:center;
+}
+.actions button,.actions a{
+  padding:0.5rem 1.2rem;
+  border-radius:25px;
+  font-weight:600;
+  font-size:0.95rem;
+  cursor:pointer;
+  text-decoration:none;
+  border:2px solid transparent;
+  transition:0.3s;
+}
+.actions button#themeToggle{
+  background:transparent;
+  border:2px solid var(--text);
+  color:var(--text);
+}
+.actions button#themeToggle:hover{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:white;
+}
+.actions a.login{
+  background:transparent;
+  border:2px solid var(--accent);
+  color:var(--accent);
+}
+.actions a.login:hover{
+  background:var(--accent);
+  color:white;
+}
+.actions a.register{
+  background:var(--accent);
+  color:white;
+}
+.actions a.register:hover{
+  background:var(--accent-dark);
+}
+
+
+/* ================= HERO ================= */
+.hero{
+  min-height:85vh;
+  padding:5rem 5vw;
+  background:
+    linear-gradient(135deg, rgba(247,37,133,0.92), rgba(255,182,193,0.72)),
+    url('https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&w=1600&q=80')
+    center/cover no-repeat fixed;
+  color:white;
+  border-radius:0 0 40px 40px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero h1 span{
+  display:inline-block;
+  animation:wave 2.5s ease-in-out infinite, glow 5s infinite alternate;
+  animation-delay:calc(var(--i)*0.08s);
+}
+@keyframes wave{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-18px);}
+}
+@keyframes glow{
+  from{text-shadow:0 0 20px rgba(247,37,133,0.6);}
+  to{text-shadow:0 0 60px rgba(247,37,133,1);}
+}
+.hero p::after{
+  content:'|';
+  margin-left:4px;
+  animation:blink 1s infinite;
+}
+@keyframes blink{
+  0%,50%,100%{opacity:1;}
+  25%,75%{opacity:0;}
+}
+
+
+/* ================= COLLECTIONS & ABOUT ================= */
+.collections{max-width:1300px;margin:8rem auto;padding:0 5vw;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2.5rem;}
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  overflow:hidden;
+  animation:floatCard 10s infinite ease-in-out;
+  box-shadow:0 18px 50px rgba(0,0,0,0.12);
+  transition:all 0.4s ease;
+}
+.card:hover{
+  transform:translateY(-20px) scale(1.02);
+  box-shadow:0 40px 80px rgba(0,0,0,0.2);
+}
+@keyframes floatCard{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-20px);}
+}
+.card img{width:100%;height:400px;object-fit:cover;transition:transform 0.6s;}
+.card:hover img{transform:scale(1.1);}
+.card-content{padding:2rem;text-align:center;}
+#about{max-width:900px;margin:8rem auto;padding:0 5vw;text-align:center;}
+
+
+/* ================= FOOTER ================= */
+footer{background:var(--card);color:var(--muted);padding:4rem 5vw 2rem;}
+footer .social-icons{margin-bottom:1.4rem; font-size:1.6rem; display:flex; justify-content:center; gap:1.2rem;}
+footer .social-icons a{color:var(--muted); transition:0.3s;}
+footer .social-icons a:hover{color:var(--accent);}
+
+
+/* ================= MOBILE - PERFECT HEADER + HERO TITLE ================= */
+.hamburger{
+  display:none;
+  background:none;
+  border:none;
+  font-size:1.8rem;
+  color:var(--text);
+  cursor:pointer;
+  transition:transform 0.3s ease;
+}
+.hamburger:hover{transform:rotate(90deg);}
+
+
+@media(max-width:768px){
+  header{
+    padding:0.5rem 4vw;
+    flex-wrap:wrap;
+    gap:1rem;
+  }
+  .logo{
+    flex-shrink:0;
+  }
+  .logo img{
+    height:36px;
+  }
+  .logo a{
+    font-size:1.4rem;
+  }
+  .hamburger{
+    display:block;
+    flex-shrink:0;
+    margin-left:auto;
+    order:3;
+  }
+  .actions{
+    display:flex !important;
+    gap:0.5rem;
+    order:2;
+    flex-shrink:1;
+  }
+  .actions button,.actions a{
+    padding:0.4rem 0.9rem;
+    font-size:0.85rem;
+    border-radius:20px;
+  }
+  nav#mainNav{
+    display:none;
+    flex-direction:column;
+    width:100%;
+    background:var(--card);
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+    padding:1.5rem 4vw;
+    border-radius:0 0 var(--radius) var(--radius);
+    gap:0;
+    z-index:1300;
+    align-items:center;
+  }
+  nav#mainNav.active{
+    display:flex;
+    animation:menuSlide 0.3s ease-out forwards;
+  }
+  @keyframes menuSlide{
+    from{opacity:0; transform:translateY(-20px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  nav#mainNav a:not(.dropdown-content a),
+  .dropbtn{
+    text-align:center;
+    width:100%;
+    max-width:280px;
+    padding:1rem 0;
+    margin:0.2rem auto;
+    font-size:1rem;
+    justify-content:center;
+  }
+  .dropdown-content{
+    position:static;
+    box-shadow:none;
+    background:transparent;
+    margin:0.3rem 0 0 0;
+    display:none;
+    width:100%;
+  }
+  .dropdown.open .dropdown-content{
+    display:flex; 
+    flex-direction:column;
+  }
+  .grid{
+    grid-template-columns:1fr;
+    padding:0 3vw;
+  }
+  .card img{height:350px;}
+  .hero{
+    padding:4rem 4vw;
+    background-attachment:scroll;
+  }
+  /* ✅ ULTIMATE HERO TITLE FIX - NO LETTERS FALLING */
+  .hero h1{
+    font-size:2.8rem !important;
+    line-height:1.05 !important;
+    max-width:95vw !important;
+    max-height:200px !important;
+    overflow:hidden !important;
+    word-wrap:break-word !important;
+    hyphens:auto !important;
+    padding:0 1rem !important;
+    margin:0 !important;
+    font-weight:700 !important;
+    letter-spacing:-0.02em !important;
+  }
+  .hero h1 span{
+    display:inline-block !important;
+    line-height:1.05 !important;
+  }
+  body, html{
+    overflow-x:hidden;
+  }
+}
+@media(max-width:480px){
+  .hero h1{font-size:2.2rem !important;}
+  .logo img{height:32px;}
+}
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="logo">
+    <a href="index.html">
+      <img src="assets/logo/the_stackly_logo.png" alt="Stackly Logo">
+      <span>STACKLY</span>
+    </a>
+  </div>
+  <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false"><i class="fa fa-bars"></i></button>
+  <nav id="mainNav">
+    <div class="dropdown">
+      <button class="dropbtn" aria-haspopup="true" aria-expanded="false">Home <i class="fa fa-caret-down"></i></button>
+      <div class="dropdown-content">
+        <a href="homepage2.html">Home 2</a>
+      </div>
+    </div>
+    <a href="shop.html">Shop</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+  <div class="actions">
+    <button id="themeToggle" aria-pressed="false"><i class="fa-solid fa-moon"></i></button>
+    <a href="login.html" class="login">Login</a>
+    <a href="register.html" class="register">Register</a>
+  </div>
+</header>
+
+
+<section class="hero">
+  <h1 id="heroTitle"></h1>
+  <p id="heroSubtitle"></p>
+</section>
+
+
+<section id="collections" class="collections">
+  <h2 style="font-family:'Playfair Display', serif; text-align:center; font-size:3.5rem; margin-bottom:4rem;">Featured Collections</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&w=900&q=80" alt="Elegant red dress">
+      <div class="card-content">
+        <h3>Elegant Red Dress</h3>
+        <p>Perfect for evening occasions with a modern twist.</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1463107971871-fbac9ddb920f?auto=format&w=900&q=80" alt="Classic white blouse">
+      <div class="card-content">
+        <h3>Classic White Blouse</h3>
+        <p>A timeless style essential for every wardrobe.</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&w=900&q=80" alt="Trendy summer hat">
+      <div class="card-content">
+        <h3>Trendy Summer Hat</h3>
+        <p>Keep cool and stylish through the sunny days.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="about">
+  <h2 style="font-family:'Playfair Display', serif; text-align:center; font-size:3rem; margin-bottom:2rem;">About Stackly Boutique</h2>
+  <p style="font-size:1.3rem; line-height:2; color:var(--muted); max-width:700px; margin:0 auto;">
+    At Stackly Boutique, we curate wardrobe essentials with love — blending luxury and comfort. Each piece is chosen for longevity, fit, and timeless aesthetic.
+  </p>
+</section>
+
+
+<footer id="contact">
+  <div style="max-width:1200px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:space-between; gap:2rem; padding:2.5rem 5vw;">
+    <div style="flex:1; min-width:220px;">
+      <a href="index.html" style="display:flex; align-items:center; gap:0.5rem; text-decoration:none; color:var(--accent); font-family:'Playfair Display', serif; font-size:1.4rem; font-weight:700;">
+        <img src="assets/logo/the_stackly_logo.png" alt="Stackly Logo" style="height:35px; width:auto;"> STACKLY
+      </a>
+      <p style="color:var(--muted); margin-top:0.8rem; line-height:1.5;">
+        Stackly Boutique<br>
+        123 Fashion Avenue, New Delhi, India<br>
+        Email: info@stackly.com<br>
+        Phone: +91 98765 43210
+      </p>
+    </div>
+    <div style="flex:1; min-width:150px;">
+      <h3 style="font-family:'Playfair Display', serif; color:var(--accent); margin-bottom:0.8rem;">Quick Links</h3>
+      <ul style="list-style:none; padding:0; margin:0; line-height:2;">
+        <li><a href="index.html" style="color:var(--muted); text-decoration:none;">Home</a></li>
+        <li><a href="shop.html" style="color:var(--muted); text-decoration:none;">Shop</a></li>
+        <li><a href="about.html" style="color:var(--muted); text-decoration:none;">About</a></li>
+        <li><a href="contact.html" style="color:var(--muted); text-decoration:none;">Contact</a></li>
+        <li><a href="dashboard.html" style="color:var(--muted); text-decoration:none;">Dashboard</a></li>
+        <li><a href="login.html" style="color:var(--muted); text-decoration:none;">Login</a></li>
+        <li><a href="register.html" style="color:var(--muted); text-decoration:none;">Register</a></li>
+      </ul>
+    </div>
+    <div style="flex:1; min-width:150px;">
+      <h3 style="font-family:'Playfair Display', serif; color:var(--accent); margin-bottom:0.8rem;">Follow Us</h3>
+      <div class="social-icons" style="font-size:1.5rem; display:flex; gap:1rem;">
+        <a href="404.html" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+        <a href="404.html" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="404.html" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="404.html" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="404.html" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center; color:var(--muted); margin-top:1rem; padding-top:1rem; border-top:1px solid rgba(0,0,0,0.1);">
+    &copy; 2025 Stackly. All rights reserved.
+  </div>
+</footer>
+
+
+<script>
+/* HERO TEXT LOGIC */
+const title="Discover Your Unique Style";
+const subtitle="Modern. Chic. Timeless.\nHand-picked pieces for your everyday elegance.";
+const titleEl=document.getElementById("heroTitle");
+const subtitleEl=document.getElementById("heroSubtitle");
+title.split("").forEach((char,i)=>{
+  const span=document.createElement("span");
+  span.textContent=char===" "?"\u00A0":char;
+  span.style.setProperty("--i",i);
+  titleEl.appendChild(span);
+});
+function typeText(el,text){
+  let i=0;
+  el.innerHTML="";
+  function typing(){
+    if(i<text.length){
+      el.innerHTML+=text[i]==="\n"?"<br>":text[i];
+      i++;
+      setTimeout(typing,40);
+    }else{
+      setTimeout(()=>typeText(el,text),3500);
+    }
+  }
+  typing();
+}
+typeText(subtitleEl,subtitle);
+
+
+/* MENU + DROPDOWN */
+const hamburger=document.querySelector(".hamburger");
+const nav=document.getElementById("mainNav");
+hamburger.onclick=()=>{
+  nav.classList.toggle("active");
+  hamburger.setAttribute("aria-expanded", nav.classList.contains("active"));
+};
+
+
+const dropdown=document.querySelector(".dropdown");
+const dropbtn=dropdown.querySelector(".dropbtn");
+dropbtn.onclick=(e)=>{
+  e.preventDefault();
+  e.stopPropagation();
+  dropdown.classList.toggle("open");
+  const isOpen=dropdown.classList.contains("open");
+  dropbtn.setAttribute("aria-expanded", isOpen);
+};
+
+
+document.addEventListener("click",(e)=>{
+  if(!dropdown.contains(e.target)){
+    dropdown.classList.remove("open");
+    dropbtn.setAttribute("aria-expanded", "false");
+  }
+});
+
+
+/* THEME TOGGLE - FULLY WORKING */
+const themeToggle=document.getElementById("themeToggle");
+const root=document.documentElement;
+function applyTheme(theme){
+  if(theme==='dark'){
+    root.setAttribute("data-theme","dark");
+    themeToggle.innerHTML='<i class="fa-solid fa-sun"></i>';
+    themeToggle.setAttribute("aria-pressed","true");
+  }else{
+    root.removeAttribute("data-theme");
+    themeToggle.innerHTML='<i class="fa-solid fa-moon"></i>';
+    themeToggle.setAttribute("aria-pressed","false");
+  }
+  document.querySelector(".hamburger i").style.color=theme==='dark'?'#fff':'var(--text)';
+}
+const savedTheme=localStorage.getItem('stackly-theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+applyTheme(savedTheme);
+themeToggle.onclick=()=>{
+  const current=root.getAttribute("data-theme")==="dark"?"light":"dark";
+  applyTheme(current);
+  localStorage.setItem('stackly-theme', current);
+};
+</script>
+</body>
+</html>
