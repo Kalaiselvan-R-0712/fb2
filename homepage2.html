@@ -48,27 +48,7 @@
       }
     }
 
-    /* 🌊 WAVY TEXT EFFECT FOR HERO PARAGRAPH */
-    .hero-wavy {
-      display: inline-block;
-    }
-    .hero-wavy span {
-      display: inline-block;
-      color: #eee;
-      font-size: 1.3rem;
-      font-family: 'Poppins', sans-serif;
-      animation: wavyText 3s ease-in-out infinite;
-      animation-delay: calc(0.1s * var(--i));
-    }
-    @keyframes wavyText {
-      0%, 100% { 
-        transform: translateY(0px);
-      }
-      50% { 
-        transform: translateY(-15px);
-      }
-    }
-
+    
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
@@ -563,117 +543,140 @@
       overflow: hidden;
     }
 
-    /* Footer */
-    footer {
-      background: var(--bg-dark);
-      color: var(--text-light);
-      padding: 4rem 2rem 2rem;
-      transition: background 0.4s, color 0.4s;
-    }
+    /* ================= FOOTER ================= */
+.site-footer {
+  background: var(--bg-light);
+  color: var(--text-dark);
+  padding: 60px 0 20px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
 
-    body:not(.dark-mode) footer {
-      background: var(--bg-light);
-      color: var(--text-dark);
-    }
+/* CONTAINER – SAME WIDTH AS HEADER */
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 50px;
+  align-items: flex-start;
+}
 
-    body:not(.dark-mode) footer {
-      border-top: 1px solid rgba(0,0,0,0.1);
-    }
+/* COLUMN */
+.footer-col h4 {
+  font-family: 'Playfair Display', serif;
+  color: #f5d76e;
+  font-size: 20px;
+  margin-bottom: 18px;
+}
 
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 2rem;
-      padding: 0 2rem;
-    }
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-    .footer-section {
-      flex: 1;
-      min-width: 220px;
-    }
+.footer-col ul li {
+  margin-bottom: 10px;
+}
 
-    .footer-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-decoration: none;
-      color: var(--gold);
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-    }
+.footer-col ul li a {
+  text-decoration: none;
+  color: #777;
+  font-size: 15px;
+  transition: 0.3s;
+}
 
-    .footer-logo img {
-      height: 35px;
-      width: auto;
-    }
+.footer-col ul li a:hover {
+  color: #f5d76e;
+}
 
-    .footer-section p {
-      color: var(--text-light);
-      margin-top: 0.8rem;
-      line-height: 1.5;
-    }
+/* BRAND COLUMN */
+.brand-col p {
+  margin-top: 12px;
+  line-height: 1.6;
+  font-size: 15px;
+  color: #777;
+}
 
-    body:not(.dark-mode) .footer-section p {
-      color: var(--text-dark);
-    }
+/* LOGO – SAME AS HEADER ALIGNMENT */
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  margin-top: 20px;
+  font-weight: 700;
+  color: #d4af37;
+  text-decoration: none;
+}
 
-    .footer-section h3 {
-      font-family: 'Playfair Display', serif;
-      color: var(--gold);
-      margin-bottom: 0.8rem;
-    }
+.footer-logo img {
+  height: 42px;
+  width: auto;
+}
 
-    .footer-links {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      line-height: 2;
-    }
+/* SOCIAL */
+.footer-social {
+  display: flex;
+  gap: 14px;
+  font-size: 20px;
+}
 
-    .footer-links a {
-      color: var(--text-light);
-      text-decoration: none;
-    }
+.footer-social a {
+  color: #777;
+  transition: 0.3s;
+}
 
-    body:not(.dark-mode) .footer-links a {
-      color: var(--text-dark);
-    }
+.footer-social a:hover {
+  color: #d4af37;
+  transform: translateY(-3px);
+}
 
-    .footer-links a:hover {
-      color: var(--gold);
-    }
+/* BOTTOM */
+.footer-bottom {
+  margin-top: 40px;
+  padding-top: 15px;
+  text-align: center;
+  font-size: 14px;
+  color: #888;
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
 
-    .social-icons {
-      font-size: 1.5rem;
-      display: flex;
-      gap: 1rem;
-    }
+/* DARK MODE */
+body.dark-mode .site-footer {
+  background: #0b0b0b;
+  color: #eee;
+}
 
-    .social-icons a {
-      color: var(--gold);
-      transition: 0.3s;
-    }
+body.dark-mode .footer-col ul li a,
+body.dark-mode .brand-col p {
+  color: #aaa;
+}
 
-    .social-icons a:hover {
-      color: #f5d76e;
-    }
+body.dark-mode .footer-bottom {
+  color: #aaa;
+  border-top-color: rgba(255,255,255,0.1);
+}
 
-    .footer-bottom {
-      text-align: center;
-      color: var(--text-light);
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
+/* MOBILE */
+@media (max-width: 900px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 35px;
+    text-align: center;
+  }
 
-    body:not(.dark-mode) .footer-bottom {
-      color: var(--text-dark);
-      border-top-color: rgba(0,0,0,0.1);
-    }
+  .footer-logo {
+    justify-content: center;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
+}
+
 
     /* MOBILE */
     @media (max-width: 768px) {
@@ -796,53 +799,72 @@
   </section>
 
   <section class="contact fade-in-up">
-    <h2>Get In Touch</h2>
     <p>Have questions? Let's design your next look together.</p>
     <a href="contact2.html"><button>Contact Us</button></a>
   </section>
 
-  <footer>
-    <div class="footer-content">
-      <div class="footer-section">
-        <a href="homepage2.html" class="footer-logo">
-          <img src="assets/logo/the_stackly_logo.webp" alt="Stackly Logo">
-          STACKLY
-        </a>
-        <p>
-          Stackly Boutique<br>
-          123 Fashion Avenue, New Delhi, India<br>
-          Email: info@stackly.com<br>
-          Phone: +91 98765 43210
-        </p>
-      </div>
-      <div class="footer-section">
-        <h3>Quick Links</h3>
-        <ul class="footer-links">
-          <li><a href="homepage2.html">Home</a></li>
-          <li><a href="shop2.html">Shop</a></li>
-          <li><a href="about2.html">About</a></li>
-          <li><a href="gallery2.html">Gallery</a></li>
-          <li><a href="contact2.html">Contact</a></li>
-          <li><a href="dashboard.html">Dashboard</a></li>
-          <li><a href="login.html">Login</a></li>
-          <li><a href="register.html">Register</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h3>Follow Us</h3>
-        <div class="social-icons">
-          <a href="404.html" aria-label="Email"><i class="ri-mail-line"></i></a>
-          <a href="404.html" aria-label="LinkedIn"><i class="ri-linkedin-fill"></i></a>
-          <a href="404.html" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
-          <a href="404.html" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
-          <a href="404.html" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
-        </div>
+<footer class="site-footer">
+  <div class="footer-container">
+
+    <!-- COLUMN 1 : BRAND -->
+    <div class="footer-col brand-col">
+      <a href="homepage2.html" class="footer-logo">
+        <img src="assets/logo/the_stackly_logo.webp" alt="Stackly Logo">
+        <span>STACKLY</span>
+      </a>
+
+      <p>
+        Stackly Boutique<br>
+        123 Fashion Avenue,<br>
+        New Delhi, India
+      </p>
+
+      <p>
+        Email: info@stackly.com<br>
+        Phone: +91 98765 43210
+      </p>
+    </div>
+
+    <!-- COLUMN 2 : QUICK LINKS -->
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="homepage2.html">Home</a></li>
+        <li><a href="shop2.html">Shop</a></li>
+        <li><a href="about2.html">About</a></li>
+        <li><a href="contact2.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- COLUMN 3 : ACCOUNT -->
+    <div class="footer-col">
+      <h4>Account</h4>
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="register.html">Register</a></li>
+      </ul>
+    </div>
+
+    <!-- COLUMN 4 : SOCIAL -->
+    <div class="footer-col">
+      <h4>Follow Us</h4>
+      <div class="footer-social">
+        <a href="404.html"><i class="ri-mail-line"></i></a>
+        <a href="404.html"><i class="ri-linkedin-fill"></i></a>
+        <a href="404.html"><i class="ri-twitter-x-line"></i></a>
+        <a href="404.html"><i class="ri-facebook-fill"></i></a>
+        <a href="404.html"><i class="ri-instagram-line"></i></a>
       </div>
     </div>
-    <div class="footer-bottom">
-      &copy; 2025 STACKLY. All rights reserved.
-    </div>
-  </footer>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2025 Stackly. All rights reserved.
+  </div>
+</footer>
+
 
   <script>
     // 🔥 PERFECT DARK MODE TOGGLE
